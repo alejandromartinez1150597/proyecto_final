@@ -1,0 +1,17 @@
+# Compilados
+bin/
+out/
+*.class
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+nbproject/
+
+# Sistema
+.DS_Store
+Thumbs.db
