@@ -1,4 +1,5 @@
 package modelo;
+import estructuras.*;
 
 public class Pregunta {
 
@@ -14,4 +15,11 @@ public class Pregunta {
         this.opciones = new ListaEnlazada();
     }
 
+    public void agregarOpcion(String textoOpcion){ // Metodo para agregar las opciones a seleccionar
+        this.opciones.agregar(textoOpcion);
+    }
+
+    public boolean verificarRespuesta(String respuestaJugador){ // Verifica si la respuesta es correcta
+        return this.respuestaCorrecta.equalsIgnoreCase(respuestaJugador);
+    }
 }
