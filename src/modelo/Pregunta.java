@@ -22,4 +22,17 @@ public class Pregunta {
     public boolean verificarRespuesta(String respuestaJugador){ // Verifica si la respuesta es correcta
         return this.respuestaCorrecta.equalsIgnoreCase(respuestaJugador);
     }
+
+    // Se generan getters para los atributos de la clase, ya que estos son privados
+    public String getEnunciado(){
+        return enunciado;
+    }
+
+    public int getNivel(){
+        return nivel;
+    }
+
+    public String getRespuestaCorrecta(){
+        return respuestaCorrecta;
+    }
 }
