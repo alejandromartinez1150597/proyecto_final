@@ -6,7 +6,6 @@ public class Pregunta {
     private int nivel;
     private String respuestaCorrecta;
 
-    public Pregunta(){
 
     }
 
