@@ -5,11 +5,25 @@ Docente: William Giraldo.
 
 ## De qué se trata
 
-Juego de preguntas por consola con escalera de premios. El concursante responde 10 preguntas
-de dificultad creciente con 4 opciones cada una. Tiene 3 comodines (50/50, ayuda del público y
-cambiar pregunta), puede retirarse con lo que ha ganado y, si falla, se queda con el premio del
-último nivel seguro. Varios concursantes juegan por turnos y al final se muestra el ranking,
-que se guarda en el archivo `puntajes.txt` para no perderlo al cerrar el juego.
+La idea es un juego de preguntas por consola con escalera de premios. El concursante va a
+responder 10 preguntas de dificultad creciente con 4 opciones cada una. Tendrá 3 comodines
+(50/50, ayuda del público y cambiar pregunta), podrá retirarse con lo que lleve ganado y, si falla,
+se queda con el premio del último nivel seguro. Varios concursantes juegan por turnos y al final
+se muestra el ranking, que se guardará en el archivo `puntajes.txt` para no perderlo al cerrar el juego.
+
+## Estado del proyecto
+
+En desarrollo. Por ahora el programa solo muestra una pregunta de prueba por consola.
+
+| Parte | Estado |
+|---|---|
+| Consola y clase Pregunta | Hecho |
+| Lista enlazada | En desarrollo |
+| Pila y cola | Pendiente |
+| Árbol (banco de preguntas y ranking) | En desarrollo |
+| Comodines y escalera de premios | Pendiente |
+| Archivos de preguntas y puntajes | Pendiente |
+| Juego completo | Pendiente |
 
 ## Requisitos
 
@@ -39,7 +53,7 @@ docs/
 └── DOCUMENTO_PROYECTO.md   Documento del proyecto (4 a 6 páginas)
 ```
 
-## Dónde está cada estructura (resumen)
+## Dónde va cada estructura (lo planeado)
 
 | Estructura      | Clase                              | Qué guarda en el juego |
 |-----------------|------------------------------------|------------------------|
