@@ -49,8 +49,6 @@ src/
 ├── estructuras/   Lista enlazada, pila, cola y árbol (con sus nodos)
 ├── modelo/        Clases del juego (pregunta, concursante, comodines...)
 └── juego/         Lógica del juego, consola, archivos y Main
-docs/
-└── DOCUMENTO_PROYECTO.md   Documento del proyecto (4 a 6 páginas)
 ```
 
 ## Dónde va cada estructura (lo planeado)
@@ -61,8 +59,6 @@ docs/
 | Pila            | `estructuras.Pila`                 | Escalera de premios ganados (retirarse y caer al nivel seguro) |
 | Cola            | `estructuras.Cola`                 | Concursantes en espera y preguntas de cada nivel |
 | Árbol           | `estructuras.ArbolBinarioBusqueda` | Banco de preguntas por nivel y ranking de premios |
-
-La explicación completa (por qué cada una y no otra) está en [docs/DOCUMENTO_PROYECTO.md](docs/DOCUMENTO_PROYECTO.md).
 
 ## Integrantes
 
