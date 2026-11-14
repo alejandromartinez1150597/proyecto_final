@@ -1,6 +1,6 @@
 # Proyecto final — Trivia de escalera de premios
 
-Proyecto final de **Estructura de Datos** — Instituto Tecnológico Metropolitano (ITM), semestre 2026-2.
+Proyecto final de **Estructura de Datos**, Instituto Tecnológico Metropolitano (ITM), semestre 2026-2.
 Docente: William Giraldo.
 
 ## De qué se trata
@@ -20,7 +20,7 @@ En desarrollo. Por ahora el programa solo muestra una pregunta de prueba por con
 | Consola y clase Pregunta | Hecho |
 | Lista enlazada | En desarrollo |
 | Pila y cola | Pendiente |
-| Árbol (banco de preguntas y ranking) | En desarrollo |
+| Árbol (banco de preguntas y ranking) | En desarrollo 
 | Comodines y escalera de premios | Pendiente |
 | Archivos de preguntas y puntajes | Pendiente |
 | Juego completo | Pendiente |
