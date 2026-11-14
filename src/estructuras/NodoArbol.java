@@ -17,4 +17,24 @@ public class NodoArbol<T> {
     public T getDato() {
         return dato;
     }
+
+    public NodoArbol<T> getIzquierdo() {
+        return izquierdo;
+    }
+
+    public void setIzquierdo(NodoArbol<T> izquierdo) {
+        this.izquierdo = izquierdo;
+    }
+
+    public NodoArbol<T> getDerecho() {
+        return derecho;
+    }
+
+    public void setDerecho(NodoArbol<T> derecho) {
+        this.derecho = derecho;
+    }
+
+    public boolean esHoja() { // si no tiene ningun hijo es una hoja
+        return izquierdo == null && derecho == null;
+    }
 }
