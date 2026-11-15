@@ -25,4 +25,16 @@ public class Jugador {
     public EscaleraPremios getEscalera() {
         return escalera;
     }
+
+    public String mostrarPremioAcumulado(){ // El jugador puede consultar su premio actual
+        return escalera.premioActual();
+    }
+
+    public void avanzarNivel(){ // Se maneja el progreso de los niveles
+        escalera.subir();
+    }
+
+    public void aplicarPenalidad(){ // Se maneja el progreso de los niveles y se aplica
+        escalera.caerNivelSeguro(); // la penalidad dependendiendo del nivel en el que se encuentre
+    }
 }
