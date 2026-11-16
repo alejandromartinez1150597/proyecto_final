@@ -1,5 +1,7 @@
 package estructuras;
 
+import java.util.ArrayList;
+
 // Arbol binario de busqueda generico. T tiene que ser Comparable para poder
 // decidir si un dato va a la izquierda o a la derecha
 public class ArbolBinarioBusqueda<T extends Comparable<T>> {
@@ -49,6 +51,28 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         } else { // es mayor, se busca solo por la derecha
             return buscarRecursivo(actual.getDerecho(), dato);
         }
+    }
+
+    // devuelve los datos de mayor a menor, maximo 'limite' datos (para el top del ranking)
+    // se usa ArrayList porque la ListaEnlazada del proyecto por ahora solo guarda String
+    public ArrayList<T> recorrerInordenInverso(int limite) {
+        ArrayList<T> resultado = new ArrayList<>();
+        inordenInversoRecursivo(raiz, resultado, limite);
+        return resultado;
+    }
+
+    private void inordenInversoRecursivo(NodoArbol<T> actual, ArrayList<T> resultado, int limite) {
+        if (actual == null || resultado.size() >= limite) { // no hay nodo o ya tenemos los que se pidieron
+            return;
+        }
+
+        inordenInversoRecursivo(actual.getDerecho(), resultado, limite); // primero los mayores
+
+        if (resultado.size() < limite) {
+            resultado.add(actual.getDato()); // despues el nodo actual
+        }
+
+        inordenInversoRecursivo(actual.getIzquierdo(), resultado, limite); // al final los menores
     }
 
     public boolean estaVacio() {
