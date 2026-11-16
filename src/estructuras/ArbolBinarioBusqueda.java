@@ -31,6 +31,26 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         return actual; // se devuelve el mismo nodo para no romper el arbol
     }
 
+    public T buscar(T dato) { // devuelve el dato guardado en el arbol, o null si no esta
+        return buscarRecursivo(raiz, dato);
+    }
+
+    private T buscarRecursivo(NodoArbol<T> actual, T dato) {
+        if (actual == null) { // se acabo el camino y no se encontro
+            return null;
+        }
+
+        int comparacion = dato.compareTo(actual.getDato());
+
+        if (comparacion == 0) { // lo encontramos
+            return actual.getDato();
+        } else if (comparacion < 0) { // es menor, se busca solo por la izquierda
+            return buscarRecursivo(actual.getIzquierdo(), dato);
+        } else { // es mayor, se busca solo por la derecha
+            return buscarRecursivo(actual.getDerecho(), dato);
+        }
+    }
+
     public boolean estaVacio() {
         return raiz == null;
     }
