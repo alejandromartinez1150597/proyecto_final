@@ -75,6 +75,23 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         inordenInversoRecursivo(actual.getIzquierdo(), resultado, limite); // al final los menores
     }
 
+    // la altura sirve para ver si el arbol quedo desbalanceado
+    // balanceado: altura cerca de log2(n). desbalanceado: altura cerca de n
+    public int altura() {
+        return alturaRecursiva(raiz);
+    }
+
+    private int alturaRecursiva(NodoArbol<T> actual) {
+        if (actual == null) { // un arbol vacio tiene altura 0
+            return 0;
+        }
+
+        int alturaIzquierda = alturaRecursiva(actual.getIzquierdo());
+        int alturaDerecha = alturaRecursiva(actual.getDerecho());
+
+        return 1 + Math.max(alturaIzquierda, alturaDerecha); // el nodo actual mas el lado mas alto
+    }
+
     public boolean estaVacio() {
         return raiz == null;
     }
