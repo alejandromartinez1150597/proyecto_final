@@ -13,7 +13,7 @@ public class Comodin5050 extends Comodin {
 
     @Override 
     public void usar(Pregunta pregunta) {
-                if (fueUsado()) {
+        if (fueUsado()) {
             return;
     }
     ListaEnlazada<String> opciones = pregunta.getOpciones();
