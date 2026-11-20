@@ -35,4 +35,8 @@ public class Pregunta {
     public String getRespuestaCorrecta(){
         return respuestaCorrecta;
     }
+
+    public ListaEnlazada getOpciones(){
+        return opciones;
+    }
 }
