@@ -65,6 +65,6 @@ src/
 | Nombre    | Usuario de GitHub          | Parte principal |
 |-----------|----------------------------|-----------------|
 | Martínez  | @alejandromartinez1150597  | Juego, consola, preguntas e integración (P1) |
-| Chica     | @                          | Nodo, lista enlazada y comodines (P2) |
-| Rubiano   | @                          | Pila, cola, escalera de premios y lectura de preguntas (P3) |
+| Chica     | @Chika002                  | Nodo, lista enlazada y comodines (P2) |
+| Rubiano   | @Arubiano662               | Pila, cola, escalera de premios y lectura de preguntas (P3) |
 | Rivera    | @JuanAlejo-Rivera          | Árbol, banco de preguntas, ranking y archivo de puntajes (P4) |
