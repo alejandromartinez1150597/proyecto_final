@@ -1,0 +1,10 @@
+1;¿Qué estructura de datos sigue la regla LIFO (último en entrar, primero en salir)?;Cola;Pila;Árbol;Lista enlazada;B
+2;¿Qué estructura de datos sigue la regla FIFO (primero en entrar, primero en salir)?;Cola;Pila;Árbol binario;Arreglo;A
+3;En Java, ¿qué palabra se usa para crear un objeto?;class;this;new;static;C
+4;¿Qué modificador hace que un atributo solo se pueda usar dentro de su clase?;public;protected;static;private;D
+5;En una lista enlazada, ¿qué guarda cada nodo además del dato?;La referencia al siguiente nodo;Su posición;El tamaño de la lista;Una copia de la lista;A
+6;¿Cómo se llama el nodo de arriba de un árbol, del que salen todos los demás?;Hoja;Rama;Cabeza;Raíz;D
+7;¿Qué operación de una pila devuelve el elemento de arriba sin sacarlo?;push;pop;peek;add;C
+8;En un árbol binario de búsqueda, ¿dónde quedan los datos menores que la raíz?;A la derecha;En la raíz;A la izquierda;Solo en las hojas;C
+9;¿Qué recorrido de un árbol binario de búsqueda entrega los datos ordenados de menor a mayor?;Inorden;Preorden;Postorden;Por niveles;A
+10;Si un árbol binario de búsqueda se desbalancea por completo, ¿cuánto cuesta buscar un dato?;O(1);O(log n);O(n²);O(n);D
