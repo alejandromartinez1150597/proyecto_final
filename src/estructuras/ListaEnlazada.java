@@ -65,6 +65,10 @@ public class ListaEnlazada<T> {
         return cabeza == null;
     }
 
+    public int tamano() {
+        return tamano;
+    }
+
     public T obtener(int posicion){
         if(estaVacia() || posicion < 0 || posicion >= tamano){
             return null;
