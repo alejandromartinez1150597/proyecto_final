@@ -13,12 +13,16 @@ public class Main {
         consola.mostrarMensaje("   TRIVIA: ¿TE VOLVERÁS MILLONARIO? (FLOW) \n");
         consola.mostrarMensaje("=========================================\n");
 
-        // 1. Pedir nombre del jugador
-        consola.mostrarMensaje("Ingresa tu nombre: ");
-        String nombre = consola.leerEntrada();
-        if (nombre.isEmpty()) {
-            nombre = "Concursante";
-        }
+        // 1. Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
+        String nombre;
+        do {
+            consola.mostrarMensaje("Ingresa tu nombre: ");
+            nombre = consola.leerEntrada().trim();
+
+            if (nombre.isEmpty()) {
+                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.");
+            }
+        } while (nombre.isEmpty());
 
         Jugador jugador = new Jugador(nombre);
         Comodin5050 comodin5050 = new Comodin5050();
