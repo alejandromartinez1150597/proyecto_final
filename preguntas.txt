@@ -1,10 +1,100 @@
 1;¿Qué estructura de datos sigue la regla LIFO (último en entrar, primero en salir)?;Cola;Pila;Árbol;Lista enlazada;B
+1;¿Qué significa la sigla CPU?;Unidad central de procesamiento;Computador personal único;Control de programas útiles;Centro de procesos unidos;A
+1;¿Cuál de estos es un sistema operativo?;Excel;Windows;Chrome;Word;B
+1;¿Qué dispositivo se usa para escribir texto en el computador?;Monitor;Parlante;Teclado;Impresora;C
+1;¿Cuántos bits tiene un byte?;2;4;16;8;D
+1;¿Cuál de estos es un lenguaje de programación?;Java;Excel;Linux;Google;A
+1;¿Qué tecla se usa normalmente para borrar el carácter a la izquierda del cursor?;Enter;Retroceso;Shift;Tab;B
+1;¿Qué memoria pierde su contenido cuando se apaga el computador?;Disco duro;Memoria USB;RAM;Disco SSD;C
+1;¿Qué es un algoritmo?;Un tipo de computador;Un virus;Un lenguaje de programación;Una serie de pasos para resolver un problema;D
+1;¿Cómo se le dice a un error en un programa?;Bug;Byte;Bit;Boot;A
 2;¿Qué estructura de datos sigue la regla FIFO (primero en entrar, primero en salir)?;Cola;Pila;Árbol binario;Arreglo;A
+2;¿Con qué método empieza a ejecutarse un programa en Java?;start;main;run;init;B
+2;¿Qué tipo de dato de Java guarda verdadero o falso?;int;String;boolean;char;C
+2;¿Qué instrucción imprime un texto en la consola en Java?;console.log();print();echo;System.out.println();D
+2;¿Qué símbolo termina la mayoría de las instrucciones en Java?;Punto y coma;Punto;Dos puntos;Coma;A
+2;¿Qué tipo de dato se usa en Java para guardar texto?;int;String;double;boolean;B
+2;¿Qué instrucción repite un bloque de código mientras se cumpla una condición?;if;switch;while;return;C
+2;¿En qué posición está el primer elemento de un arreglo en Java?;1;-1;Depende del tamaño;0;D
+2;¿Qué operador se usa en Java para comparar si dos números son iguales?;==;=;!=;=>;A
+2;¿Qué tipo de dato usarías en Java para guardar el número 3.14?;int;double;boolean;char;B
 3;En Java, ¿qué palabra se usa para crear un objeto?;class;this;new;static;C
+3;¿Qué es una clase en programación orientada a objetos?;Una variable global;Un tipo de ciclo;Un molde para crear objetos;Un archivo de texto;C
+3;¿Cómo se llama el método especial que se ejecuta al crear un objeto?;Destructor;Getter;Setter;Constructor;D
+3;¿Qué palabra se usa en Java para que una clase herede de otra?;extends;implements;inherits;super;A
+3;¿Qué palabra se usa para referirse al objeto actual dentro de una clase?;super;this;self;new;B
+3;¿Qué palabra se usa en Java para que una clase cumpla una interfaz?;extends;uses;implements;import;C
+3;¿Para qué sirve un método getter?;Borrar un atributo;Crear un objeto;Cambiar el valor de un atributo;Devolver el valor de un atributo;D
+3;¿Qué valor tiene por defecto un atributo de tipo objeto que no se ha inicializado?;null;0;false;Un texto vacío;A
+3;¿Qué palabra se usa en Java para traer una clase de otro paquete?;include;import;using;require;B
+3;¿Qué hace la instrucción return dentro de un método?;Repite el método;Detiene todo el programa;Devuelve un valor y termina el método;Crea una variable;C
 4;¿Qué modificador hace que un atributo solo se pueda usar dentro de su clase?;public;protected;static;private;D
+4;¿Qué pilar de la POO consiste en ocultar los atributos y dar acceso a ellos por medio de métodos?;Herencia;Polimorfismo;Abstracción;Encapsulamiento;D
+4;¿Qué pilar de la POO permite que una clase reciba los atributos y métodos de otra?;Herencia;Encapsulamiento;Composición;Sobrecarga;A
+4;¿Qué es una clase abstracta?;Una clase sin atributos;Una clase de la que no se pueden crear objetos directamente;Una clase que no tiene métodos;Una clase privada;B
+4;¿Cómo se llama tener varios métodos con el mismo nombre pero con parámetros diferentes?;Sobrescritura;Herencia;Sobrecarga;Encapsulamiento;C
+4;¿Qué anotación indica que un método redefine uno de la clase padre?;@Deprecated;@Test;@Main;@Override;D
+4;¿Qué modificador deja que las clases hijas usen un atributo sin volverlo público?;protected;private;final;static;A
+4;¿Qué palabra se usa para llamar al constructor de la clase padre?;this;super;parent;base;B
+4;¿Qué significa que un atributo sea static?;Que no se puede cambiar;Que es privado;Que pertenece a la clase y no a cada objeto;Que se borra al terminar el método;C
+4;¿Qué pilar de la POO permite que un mismo método se comporte distinto según el objeto?;Encapsulamiento;Abstracción;Herencia;Polimorfismo;D
 5;En una lista enlazada, ¿qué guarda cada nodo además del dato?;La referencia al siguiente nodo;Su posición;El tamaño de la lista;Una copia de la lista;A
+5;En una lista enlazada, ¿cómo se llama el primer nodo?;Cabeza;Raíz;Hoja;Fin;A
+5;En una lista simple, ¿a qué apunta el siguiente del último nodo?;Al primero;A null;A sí mismo;Al anterior;B
+5;¿Cuánto cuesta agregar un dato al inicio de una lista enlazada?;O(n);O(log n);O(1);O(n²);C
+5;¿Qué ventaja tiene una lista enlazada frente a un arreglo?;Se accede directo a cualquier posición;Usa menos memoria por dato;Siempre está ordenada;Puede crecer sin definir su tamaño antes;D
+5;¿Cuánto cuesta en el peor caso buscar un dato en una lista enlazada?;O(n);O(1);O(log n);O(n log n);A
+5;En una lista doblemente enlazada, ¿qué tiene cada nodo?;Solo la referencia al siguiente;Referencias al siguiente y al anterior;Dos datos;Una referencia a la cabeza;B
+5;¿Qué pasa si en una lista enlazada se pierde la referencia a la cabeza?;Se ordena sola;Se duplica;Se pierde el acceso a toda la lista;Nada, se recupera desde el final;C
+5;¿Cómo se llama la lista en la que el último nodo apunta otra vez al primero?;Lista doble;Lista ordenada;Lista vacía;Lista circular;D
+5;¿Qué se hace para eliminar un nodo del medio de una lista simple?;El nodo anterior pasa a apuntar al siguiente del eliminado;Se borra la cabeza;Se recorre la lista al revés;Se crea una lista nueva;A
 6;¿Cómo se llama el nodo de arriba de un árbol, del que salen todos los demás?;Hoja;Rama;Cabeza;Raíz;D
+6;¿Qué operación agrega un elemento a una pila?;pop;push;peek;poll;B
+6;¿Qué estructura usa el botón deshacer (Ctrl+Z) de un editor?;Cola;Árbol;Pila;Lista circular;C
+6;¿Qué estructura se usa para atender en orden los documentos enviados a una impresora?;Pila;Árbol;Grafo;Cola;D
+6;Si se apilan 1, 2 y 3 en ese orden, ¿cuál sale primero?;3;1;2;Salen todos a la vez;A
+6;Si se encolan 1, 2 y 3 en ese orden, ¿cuál sale primero?;3;1;2;Depende del tamaño;B
+6;¿Qué debe pasar al intentar sacar un elemento de una pila vacía?;Devuelve el primero;Se agrega un cero;Se avisa con un error que está vacía;Se reinicia la pila;C
+6;¿Cuánto cuesta encolar si la cola guarda referencias al frente y al fin?;O(n);O(log n);O(n²);O(1);D
+6;¿Qué estructura usa Java para controlar los métodos que se están ejecutando?;Pila;Cola;Árbol;Lista circular;A
+6;¿Qué estructura sirve para revisar si los paréntesis de una expresión están bien cerrados?;Cola;Pila;Árbol;Arreglo ordenado;B
 7;¿Qué operación de una pila devuelve el elemento de arriba sin sacarlo?;push;pop;peek;add;C
+7;¿Cómo se llama el nodo de un árbol que no tiene hijos?;Raíz;Rama;Hoja;Padre;C
+7;¿Cuántos hijos puede tener como máximo un nodo de un árbol binario?;1;3;Ilimitados;2;D
+7;¿Qué es la altura de un árbol?;La cantidad de niveles desde la raíz hasta la hoja más lejana;La cantidad de hojas;El valor de la raíz;La cantidad de nodos;A
+7;¿En qué orden visita los nodos el recorrido preorden?;Izquierda, raíz, derecha;Raíz, izquierda, derecha;Izquierda, derecha, raíz;Derecha, raíz, izquierda;B
+7;¿En qué orden visita los nodos el recorrido postorden?;Raíz, izquierda, derecha;Izquierda, raíz, derecha;Izquierda, derecha, raíz;Raíz, derecha, izquierda;C
+7;En un árbol, ¿cómo se llaman los nodos que tienen el mismo padre?;Hojas;Raíces;Ancestros;Hermanos;D
+7;¿Qué técnica se usa casi siempre para recorrer un árbol?;Recursión;Ordenamiento burbuja;Herencia;Encapsulamiento;A
+7;¿Qué recorrido de un árbol usa una cola para visitar los nodos?;Inorden;Por niveles;Preorden;Postorden;B
+7;Si un árbol vacío tiene altura 0, ¿qué altura tiene un árbol que solo tiene la raíz?;0;2;1;-1;C
 8;En un árbol binario de búsqueda, ¿dónde quedan los datos menores que la raíz?;A la derecha;En la raíz;A la izquierda;Solo en las hojas;C
+8;En un árbol binario de búsqueda, ¿dónde está el valor mayor?;En la raíz;En la hoja más a la izquierda;En cualquier hoja;En el nodo más a la derecha;D
+8;En un árbol binario de búsqueda, ¿dónde está el valor menor?;En el nodo más a la izquierda;En la raíz;En el nodo más a la derecha;En la última hoja insertada;A
+8;¿Cuánto cuesta buscar en un árbol binario de búsqueda balanceado?;O(n);O(log n);O(1);O(n²);B
+8;Si se insertan 50, 30 y 70 en un árbol binario de búsqueda vacío, ¿cuál queda de raíz?;30;70;50;El mayor;C
+8;Si se insertan 10, 20, 30 y 40 en ese orden en un árbol binario de búsqueda, ¿cómo queda?;Balanceado;Con la raíz en 40;Con todos a la izquierda;Como una lista hacia la derecha;D
+8;¿Qué interfaz de Java permite que los objetos se comparen para ordenarlos en el árbol?;Comparable;Serializable;Runnable;Iterable;A
+8;¿Qué devuelve compareTo cuando el objeto es menor que el otro?;Cero;Un número negativo;Un número positivo;true;B
+8;Al eliminar un nodo con dos hijos en un árbol binario de búsqueda, ¿por cuál se suele reemplazar?;Por la raíz;Por cualquier hoja;Por el menor del subárbol derecho;Por su padre;C
+8;Si se insertan 8, 3, 10, 1 y 6 en un árbol binario de búsqueda, ¿quién es el padre del 6?;8;10;1;3;D
 9;¿Qué recorrido de un árbol binario de búsqueda entrega los datos ordenados de menor a mayor?;Inorden;Preorden;Postorden;Por niveles;A
+9;¿Qué notación se usa para describir el peor caso de un algoritmo?;Big O;Big Z;Lambda;Delta;A
+9;¿Cuál es la complejidad de la búsqueda binaria en un arreglo ordenado?;O(n);O(log n);O(1);O(n log n);B
+9;¿Cuál es la complejidad del ordenamiento burbuja en el peor caso?;O(n);O(log n);O(n²);O(1);C
+9;¿Qué tipo de árbol usa rotaciones para mantenerse balanceado?;Árbol degenerado;Árbol de expresión;Árbol general;Árbol AVL;D
+9;En un árbol AVL, ¿cuál es la diferencia máxima de altura permitida entre los dos subárboles de un nodo?;1;0;2;3;A
+9;¿Qué recorrido sirve para copiar un árbol creando primero la raíz y luego sus hijos?;Inorden;Preorden;Postorden;Inorden inverso;B
+9;¿Qué recorrido se usa para borrar un árbol, procesando los hijos antes que el padre?;Preorden;Inorden;Postorden;Por niveles;C
+9;¿Qué error sale en Java cuando una recursión nunca llega a su caso base?;NullPointerException;ArithmeticException;ClassCastException;StackOverflowError;D
+9;¿Qué recorrido entrega los datos de un árbol binario de búsqueda de mayor a menor?;Inorden inverso (derecha, raíz, izquierda);Preorden;Postorden;Por niveles;A
 10;Si un árbol binario de búsqueda se desbalancea por completo, ¿cuánto cuesta buscar un dato?;O(1);O(log n);O(n²);O(n);D
+10;Contando la raíz como nivel 1, ¿cuál es la altura mínima de un árbol binario con 15 nodos?;3;4;5;15;B
+10;Contando la raíz como nivel 1, ¿cuántos nodos tiene como máximo un árbol binario de altura 3?;3;6;7;8;C
+10;¿Cuál es la complejidad promedio del ordenamiento Quicksort?;O(n);O(n²);O(log n);O(n log n);D
+10;En una tabla hash bien distribuida, ¿cuánto cuesta en promedio buscar un dato?;O(1);O(n);O(log n);O(n²);A
+10;Si el recorrido en profundidad (DFS) de un grafo no se hace con recursión, ¿qué estructura usa?;Cola;Pila;Árbol AVL;Tabla hash;B
+10;¿Qué estructura usa el recorrido en anchura (BFS) de un grafo?;Pila;Árbol;Cola;Lista circular;C
+10;Si se insertan 8, 3, 10, 1, 6 y 14 en un árbol binario de búsqueda, ¿qué da el recorrido preorden?;1 3 6 8 10 14;1 6 3 14 10 8;8 3 10 1 6 14;8 3 1 6 10 14;D
+10;¿Cuántas veces se puede partir a la mitad un arreglo de 1024 elementos hasta que quede uno solo?;10;5;100;512;A
+10;¿Qué recorrido de un árbol de expresión da la notación postfija?;Preorden;Postorden;Inorden;Por niveles;B
