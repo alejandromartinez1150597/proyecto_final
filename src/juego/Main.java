@@ -10,9 +10,10 @@ public class Main {
         Consola consola = new Consola();
 
         consola.mostrarMensaje("=========================================\n");
-        consola.mostrarMensaje("   TRIVIA: ¿TE VOLVERÁS MILLONARIO? (FLOW) \n");
+        consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
         consola.mostrarMensaje("=========================================\n");
 
+<<<<<<< HEAD
         // 1. Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
         String nombre;
         do {
@@ -23,28 +24,36 @@ public class Main {
                 consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.");
             }
         } while (nombre.isEmpty());
+=======
+        // nombre de jugador
+        consola.mostrarMensaje("Ingresa tu nombre: ");
+        String nombre = consola.leerEntrada();
+        if (nombre.isEmpty()) {
+            nombre = "Jugador";
+        }
+>>>>>>> 93e0823d1e95217e172119586f8bbc910372b91f
 
         Jugador jugador = new Jugador(nombre);
         Comodin5050 comodin5050 = new Comodin5050();
 
         consola.mostrarMensaje("\n¡Hola, " + jugador.getNombre() + "! Premio inicial: " + jugador.mostrarPremioAcumulado() + "\n");
 
-        // 2. Preguntas de prueba
-        Pregunta p1 = new Pregunta("¿Qué estructura sigue el orden FIFO (primero en entrar, primero en salir)?", 1, "A");
-        p1.agregarOpcion("A) Cola");
-        p1.agregarOpcion("B) Pila");
-        p1.agregarOpcion("C) Árbol");
-        p1.agregarOpcion("D) Grafo");
+        // pregunta de prueba
+        Pregunta p1 = new Pregunta("¿Quién ganó la Copa Mundial de la FIFA en el año 1962?", 1, "A");
+        p1.agregarOpcion("A) Brasil");
+        p1.agregarOpcion("B) Francia");
+        p1.agregarOpcion("C) Alemania");
+        p1.agregarOpcion("D) Italia");
 
-        Pregunta p2 = new Pregunta("¿Cuál es la complejidad promedio de búsqueda en un árbol binario de búsqueda balanceado?", 2, "C");
-        p2.agregarOpcion("A) O(n^2)");
-        p2.agregarOpcion("B) O(n)");
-        p2.agregarOpcion("C) O(log n)");
-        p2.agregarOpcion("D) O(1)");
+        Pregunta p2 = new Pregunta("¿Cuál es la capital de Colombia?", 2, "C");
+        p2.agregarOpcion("A) Medellín");
+        p2.agregarOpcion("B) Bucaramanga");
+        p2.agregarOpcion("C) Bogotá");
+        p2.agregarOpcion("D) Cali");
 
         Pregunta[] rondas = { p1, p2 };
 
-        // 3. Flujo de rondas
+        // flujo de partidas
         for (int i = 0; i < rondas.length; i++) {
             Pregunta actual = rondas[i];
             consola.mostrarMensaje("\n--- Ronda " + (i + 1) + " (Nivel " + actual.getNivel() + ") ---\n");
@@ -54,7 +63,7 @@ public class Main {
                 consola.mostrarMensaje(actual.getOpciones().obtener(j) + "\n");
             }
 
-            // Ejemplo opcional: si aún no se ha usado el 50/50, preguntar si quiere probarlo
+            // Validar el comodín 50/50
             if (!comodin5050.fueUsado()) {
                 consola.mostrarMensaje("¿Deseas activar el comodín 50/50 antes de responder? (S/N): ");
                 String usarComodin = consola.leerEntrada().toUpperCase();
