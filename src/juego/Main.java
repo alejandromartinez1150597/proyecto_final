@@ -13,7 +13,6 @@ public class Main {
         consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
         consola.mostrarMensaje("=========================================\n");
 
-<<<<<<< HEAD
         // 1. Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
         String nombre;
         do {
@@ -21,17 +20,9 @@ public class Main {
             nombre = consola.leerEntrada().trim();
 
             if (nombre.isEmpty()) {
-                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.");
+                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.\n");
             }
         } while (nombre.isEmpty());
-=======
-        // nombre de jugador
-        consola.mostrarMensaje("Ingresa tu nombre: ");
-        String nombre = consola.leerEntrada();
-        if (nombre.isEmpty()) {
-            nombre = "Jugador";
-        }
->>>>>>> 93e0823d1e95217e172119586f8bbc910372b91f
 
         Jugador jugador = new Jugador(nombre);
         Comodin5050 comodin5050 = new Comodin5050();
