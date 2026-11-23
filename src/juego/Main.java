@@ -1,66 +1,35 @@
 package juego;
 
-import modelo.*;
-
 public class Main {
 
     public static void main(String[] args) {
         Consola consola = new Consola();
 
         consola.mostrarMensaje("=========================================\n");
-        consola.mostrarMensaje("   PRUEBA DEL FLUJO COMPLETO   \n");
+        consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
         consola.mostrarMensaje("=========================================\n");
 
-        // 1. Pedir el nombre del jugador
-        consola.mostrarMensaje("Ingresa tu nombre: ");
-        String nombre = consola.leerEntrada();
-        if (nombre.isEmpty()) {
-            nombre = "Jugador";
+        // 1. Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
+        String nombre;
+        do {
+            consola.mostrarMensaje("Ingresa tu nombre: ");
+            nombre = consola.leerEntrada().trim();
+
+            if (nombre.isEmpty()) {
+                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.\n");
+            }
+        } while (nombre.isEmpty());
+
+        // 2. Se cargan las preguntas del archivo al banco (arbol de niveles con su cola de preguntas)
+        BancoPreguntas banco = new BancoPreguntas();
+        int cargadas = new LectorPreguntas("banco_preguntas.txt").cargar(banco);
+        if (cargadas == 0) {
+            consola.mostrarMensaje("No hay preguntas para jugar, revisa el archivo banco_preguntas.txt\n");
+            return;
         }
 
-        // 2. Crear banco de preguntas de prueba
-        BancoPreguntas banco = cargarPreguntasDePrueba();
-
-        // 3. Crear el juego con el nombre y el banco, e iniciar la partida
-        Juego juego = new Juego(nombre, banco);
+        // 3. Se crea el juego con la misma consola y se inicia la partida
+        Juego juego = new Juego(nombre, banco, consola);
         juego.iniciarPartida();
-    }
-
-    private static BancoPreguntas cargarPreguntasDePrueba() {
-        BancoPreguntas banco = new BancoPreguntas();
-
-        // Dos preguntas de Nivel 1 (Bloque 1) para probar el comodín "Cambio de pregunta"
-        Pregunta p1a = new Pregunta("¿Qué estructura sigue el principio FIFO?", 1, "A");
-        p1a.agregarOpcion("A) Cola");
-        p1a.agregarOpcion("B) Pila");
-        p1a.agregarOpcion("C) Árbol");
-        p1a.agregarOpcion("D) Grafo");
-
-        Pregunta p1b = new Pregunta("¿Qué estructura sigue el principio LIFO?", 1, "B");
-        p1b.agregarOpcion("A) Cola");
-        p1b.agregarOpcion("B) Pila");
-        p1b.agregarOpcion("C) Lista doble");
-        p1b.agregarOpcion("D) Arreglo");
-
-        // Pregunta de Nivel 2 (Bloque 1)
-        Pregunta p2 = new Pregunta("¿Qué palabra clave en Java impide instanciar una clase directamente?", 2, "C");
-        p2.agregarOpcion("A) static");
-        p2.agregarOpcion("B) final");
-        p2.agregarOpcion("C) abstract");
-        p2.agregarOpcion("D) private");
-
-        // Pregunta de Nivel 4 (Bloque 2) para ver el cambio de categoría/bloque
-        Pregunta p4 = new Pregunta("¿Cuál es el recorrido de un ABB que devuelve los elementos de mayor a menor?", 4, "D");
-        p4.agregarOpcion("A) Preorden");
-        p4.agregarOpcion("B) Inorden normal");
-        p4.agregarOpcion("C) Por niveles");
-        p4.agregarOpcion("D) Inorden inverso");
-
-        banco.agregarPregunta(p1a);
-        banco.agregarPregunta(p1b);
-        banco.agregarPregunta(p2);
-        banco.agregarPregunta(p4);
-
-        return banco;
     }
 }

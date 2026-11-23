@@ -16,7 +16,12 @@ public class Juego {
     }
 
     public Juego(String nombreJugador, BancoPreguntas banco) {
-        this.consola = new Consola();
+        this(nombreJugador, banco, new Consola());
+    }
+
+    // recibe la misma consola de Main para no tener dos Scanner leyendo el teclado
+    public Juego(String nombreJugador, BancoPreguntas banco, Consola consola) {
+        this.consola = consola;
         this.jugador = new Jugador(nombreJugador);
         this.banco = (banco != null) ? banco : new BancoPreguntas();
     }
@@ -48,6 +53,20 @@ public class Juego {
         }
 
         consola.mostrarMensaje("\nPartida finalizada. Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
+        guardarEnRanking();
+    }
+
+    // al terminar se carga el ranking del archivo, se agrega el puntaje de esta partida,
+    // se guarda otra vez y se muestran los 5 mejores
+    private void guardarEnRanking() {
+        Ranking ranking = new Ranking();
+        ArchivoPuntajes archivo = new ArchivoPuntajes("puntajes.txt");
+        archivo.cargar(ranking);
+
+        ranking.agregar(new Puntaje(jugador.getNombre(), jugador.getEscalera().getPremio()));
+        archivo.guardar(ranking);
+
+        consola.mostrarMensaje("\n" + ranking.mostrarTop(5) + "\n");
     }
 
     private boolean jugarRonda(Pregunta preguntaActual, BancoPreguntas banco) {
