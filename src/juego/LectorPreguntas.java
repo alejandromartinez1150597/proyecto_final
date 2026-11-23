@@ -62,14 +62,15 @@ public class LectorPreguntas {
         }
 
         String correcta = partes[6].trim().toUpperCase();
-        if (nivel < 1 || nivel > 10 || !correcta.matches("[A-D]")) {
+        if (nivel < 1 || nivel > 12 || !correcta.matches("[A-D]")) {
             System.out.println("Linea ignorada en preguntas, nivel o respuesta invalida: " + linea);
             return null;
         }
 
         Pregunta pregunta = new Pregunta(partes[1].trim(), nivel, correcta);
-        for (int i = 2; i <= 5; i++) { // las 4 opciones quedan en orden A, B, C, D
-            pregunta.agregarOpcion(partes[i].trim());
+        String letras = "ABCD";
+        for (int i = 2; i <= 5; i++) { // las 4 opciones quedan en orden y con su letra: "A) texto"
+            pregunta.agregarOpcion(letras.charAt(i - 2) + ") " + partes[i].trim());
         }
         return pregunta;
     }

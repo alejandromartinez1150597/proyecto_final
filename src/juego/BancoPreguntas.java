@@ -36,6 +36,41 @@ public class BancoPreguntas {
         return pregunta;
     }
 
+    // Busca una pregunta disponible dentro de un bloque (1 a 4) recorriendo sus niveles en orden
+    public Pregunta siguientePreguntaDeBloque(int bloque) {
+        int[] nivelesDelBloque = obtenerNivelesDeBloque(bloque);
+        for (int nivelActual : nivelesDelBloque) {
+            if (hayPreguntas(nivelActual)) {
+                return siguientePregunta(nivelActual);
+            }
+        }
+        return null;
+    }
+
+    public boolean hayPreguntasEnBloque(int bloque) {
+        for (int nivelActual : obtenerNivelesDeBloque(bloque)) {
+            if (hayPreguntas(nivelActual)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int[] obtenerNivelesDeBloque(int bloque) {
+        switch (bloque) {
+            case 1:
+                return new int[]{1, 2, 3};
+            case 2:
+                return new int[]{4, 5, 6};
+            case 3:
+                return new int[]{7, 8, 9};
+            case 4:
+                return new int[]{10, 11, 12};
+            default:
+                return new int[0];
+        }
+    }
+
     public boolean hayPreguntas(int numeroNivel) {
         NivelPreguntas nivel = buscarNivel(numeroNivel);
         return nivel != null && !nivel.getPreguntas().estaVacia();
@@ -54,5 +89,20 @@ public class BancoPreguntas {
     // como compareTo solo mira el numero, el arbol devuelve el nivel guardado con sus preguntas
     private NivelPreguntas buscarNivel(int numeroNivel) {
         return niveles.buscar(new NivelPreguntas(numeroNivel));
+    }
+
+    // Metodo para seleccionar una pregunta diferente del banco de preguntas
+    public Pregunta siguientePreguntaDiferente(int numeroNivel, String enunciadoActual) {
+        if (!hayPreguntas(numeroNivel)) {
+            return null;
+        }
+        int total = cantidadPreguntas(numeroNivel);
+        for (int i = 0; i < total; i++) {
+            Pregunta candidata = siguientePregunta(numeroNivel);
+            if (candidata != null && !candidata.getEnunciado().equals(enunciadoActual)) {
+                return candidata;
+            }
+        }
+        return siguientePregunta(numeroNivel);
     }
 }
