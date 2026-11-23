@@ -7,26 +7,107 @@ public class Juego {
 
     private Consola consola;
     private Jugador jugador;
+    private BancoPreguntas banco;
 
-    public Juego(String nombreJugador){
+    public Juego(String nombreJugador) {
         this.consola = new Consola();
         this.jugador = new Jugador(nombreJugador);
+        this.banco = new BancoPreguntas();
     }
 
-    //Este metodo inicia el ciclo de la partida
-    public void iniciarPartida(){
+    public Juego(String nombreJugador, BancoPreguntas banco) {
+        this.consola = new Consola();
+        this.jugador = new Jugador(nombreJugador);
+        this.banco = (banco != null) ? banco : new BancoPreguntas();
+    }
+
+    // Este metodo inicia el ciclo de la partida
+    public void iniciarPartida() {
         consola.mostrarMensaje("=========================================\n");
         consola.mostrarMensaje(" BIENVENIDO A LA TRIVIA: ¿TE VOLVERÁS MILLONARIO?! \n");
         consola.mostrarMensaje("=========================================\n");
 
-        consola.mostrarMensaje("Concursante registrado: " + jugador.getNombre() + "\n");
+        consola.mostrarMensaje("Jugador registrado: " + jugador.getNombre() + "\n");
         consola.mostrarMensaje("Premio actual: " + jugador.mostrarPremioAcumulado() + "\n");
 
-        //Mostramos las 10 preguntas y las opciones de retiro/comodines
-        consola.mostrarMensaje("[Temporal mientras se finalizan las demás mecanicas del juego]\n");
+        for (int nivel = 1; nivel <= 12; nivel++) {
+            Pregunta pregunta = banco.siguientePregunta(nivel);
+            if (pregunta == null) {
+                consola.mostrarMensaje("\nNo hay preguntas cargadas para el nivel " + nivel + ". Fin del ciclo de prueba.\n");
+                break;
+            }
+
+            boolean ganoRonda = jugarRonda(pregunta, banco);
+            if (!ganoRonda) {
+                break;
+            }
+
+            if (nivel < 12) {
+                menuCompraComodin();
+            }
+        }
+
+        consola.mostrarMensaje("\nPartida finalizada. Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
     }
 
-    // Se añade menu de compra de comodines post nivel
+    private boolean jugarRonda(Pregunta preguntaActual, BancoPreguntas banco) {
+        boolean usoComodinEnRonda = false;
+
+        while (true) {
+            consola.mostrarMensaje("\n--- " + preguntaActual.getCategoria() + " | Nivel " + preguntaActual.getNivel()
+                    + " | Multiplicador actual: x" + jugador.getMultiplicador() + " ---\n");
+            consola.mostrarMensaje(preguntaActual.getEnunciado() + "\n");
+
+            for (int i = 0; i < preguntaActual.getOpciones().tamano(); i++) {
+                consola.mostrarMensaje(preguntaActual.getOpciones().obtener(i) + "\n");
+            }
+
+            int cantCambio = jugador.contarComodin("Cambio de pregunta");
+            if (cantCambio > 0) {
+                consola.mostrarMensaje("\n¿Deseas usar 'Cambio de pregunta' (tienes " + cantCambio
+                        + "/2)? Esto reiniciará tu multiplicador. (S/N): ");
+                String eleccion = consola.leerEntrada().toUpperCase();
+
+                if (eleccion.equals("S")) {
+                    Comodin consumido = jugador.usarYConsumirComodin("Cambio de pregunta");
+                    if (consumido instanceof ComodinCambioPregunta) {
+                        Pregunta nueva = ((ComodinCambioPregunta) consumido).cambiarPregunta(preguntaActual, banco);
+                        usoComodinEnRonda = true;
+                        jugador.resetearMultiplicador();
+
+                        if (nueva != null && !nueva.getEnunciado().equals(preguntaActual.getEnunciado())) {
+                            preguntaActual = nueva;
+                            consola.mostrarMensaje("¡Pregunta cambiada! Multiplicador ahora en x" + jugador.getMultiplicador() + ".\n");
+                            continue;
+                        } else {
+                            consola.mostrarMensaje("No había otra pregunta distinta disponible en este nivel; mantienes la actual.\n");
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        consola.mostrarMensaje("Ingresa tu respuesta (A, B, C o D): ");
+        String respuesta = consola.leerOpcionPregunta();
+
+        if (preguntaActual.verificarRespuesta(respuesta)) {
+            if (!usoComodinEnRonda) {
+                jugador.registrarAciertoSinComodin();
+            }
+            jugador.avanzarNivel();
+            consola.mostrarMensaje("¡Correcto! Multiplicador: x" + jugador.getMultiplicador()
+                    + " | Premio: " + jugador.mostrarPremioAcumulado() + "\n");
+            return true;
+        } else {
+            jugador.aplicarPenalidad();
+            consola.mostrarMensaje("Incorrecto. La respuesta correcta era " + preguntaActual.getRespuestaCorrecta() + ".\n");
+            consola.mostrarMensaje("Premio tras penalidad: " + jugador.mostrarPremioAcumulado() + "\n");
+            return false;
+        }
+    }
+
+    // Se añade menú de compra de comodines post nivel
     private void menuCompraComodin() {
         while (true) {
             int cant5050 = jugador.contarComodin("50/50");

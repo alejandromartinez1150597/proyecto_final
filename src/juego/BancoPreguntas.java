@@ -90,4 +90,19 @@ public class BancoPreguntas {
     private NivelPreguntas buscarNivel(int numeroNivel) {
         return niveles.buscar(new NivelPreguntas(numeroNivel));
     }
+
+    // Metodo para seleccionar una pregunta diferente del banco de preguntas
+    public Pregunta siguientePreguntaDiferente(int numeroNivel, String enunciadoActual) {
+        if (!hayPreguntas(numeroNivel)) {
+            return null;
+        }
+        int total = cantidadPreguntas(numeroNivel);
+        for (int i = 0; i < total; i++) {
+            Pregunta candidata = siguientePregunta(numeroNivel);
+            if (candidata != null && !candidata.getEnunciado().equals(enunciadoActual)) {
+                return candidata;
+            }
+        }
+        return siguientePregunta(numeroNivel);
+    }
 }
