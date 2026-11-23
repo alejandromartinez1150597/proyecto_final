@@ -8,7 +8,7 @@ public class Main {
         Consola consola = new Consola();
 
         consola.mostrarMensaje("=========================================\n");
-        consola.mostrarMensaje("   PRUEBA DEL FLUJO COMPLETO - TRIVIA    \n");
+        consola.mostrarMensaje("   PRUEBA DEL FLUJO COMPLETO   \n");
         consola.mostrarMensaje("=========================================\n");
 
         // 1. Pedir el nombre del jugador
