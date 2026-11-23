@@ -15,3 +15,6 @@ nbproject/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Se genera al jugar
+puntajes.txt
