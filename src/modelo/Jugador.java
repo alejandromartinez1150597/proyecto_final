@@ -80,4 +80,16 @@ public class Jugador {
         }
         return null;
     }
+
+    public void registrarAciertoSinComodin() {
+        escalera.registrarAciertoSinComodin();
+    }
+
+    public void resetearMultiplicador() {
+        escalera.resetearMultiplicador();
+    }
+
+    public int getMultiplicador() {
+        return escalera.getMultiplicador();
+    }
 }
