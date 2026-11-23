@@ -36,6 +36,41 @@ public class BancoPreguntas {
         return pregunta;
     }
 
+    // Busca una pregunta disponible dentro de un bloque (1 a 4) recorriendo sus niveles en orden
+    public Pregunta siguientePreguntaDeBloque(int bloque) {
+        int[] nivelesDelBloque = obtenerNivelesDeBloque(bloque);
+        for (int nivelActual : nivelesDelBloque) {
+            if (hayPreguntas(nivelActual)) {
+                return siguientePregunta(nivelActual);
+            }
+        }
+        return null;
+    }
+
+    public boolean hayPreguntasEnBloque(int bloque) {
+        for (int nivelActual : obtenerNivelesDeBloque(bloque)) {
+            if (hayPreguntas(nivelActual)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int[] obtenerNivelesDeBloque(int bloque) {
+        switch (bloque) {
+            case 1:
+                return new int[]{1, 2, 3};
+            case 2:
+                return new int[]{4, 5, 6};
+            case 3:
+                return new int[]{7, 8, 9};
+            case 4:
+                return new int[]{10, 11, 12};
+            default:
+                return new int[0];
+        }
+    }
+
     public boolean hayPreguntas(int numeroNivel) {
         NivelPreguntas nivel = buscarNivel(numeroNivel);
         return nivel != null && !nivel.getPreguntas().estaVacia();

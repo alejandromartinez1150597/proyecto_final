@@ -62,7 +62,7 @@ public class LectorPreguntas {
         }
 
         String correcta = partes[6].trim().toUpperCase();
-        if (nivel < 1 || nivel > 10 || !correcta.matches("[A-D]")) {
+        if (nivel < 1 || nivel > 12 || !correcta.matches("[A-D]")) {
             System.out.println("Linea ignorada en preguntas, nivel o respuesta invalida: " + linea);
             return null;
         }
