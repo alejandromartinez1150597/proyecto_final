@@ -8,6 +8,7 @@ public class Juego {
     private Consola consola;
     private Jugador jugador;
     private BancoPreguntas banco;
+    private boolean seRetiro; // queda en true si el jugador decide plantarse
 
     public Juego(String nombreJugador) {
         this.consola = new Consola();
@@ -52,7 +53,8 @@ public class Juego {
             }
         }
 
-        consola.mostrarMensaje("\nPartida finalizada. Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
+        String comoTermino = seRetiro ? " (se retiró)" : "";
+        consola.mostrarMensaje("\nPartida finalizada" + comoTermino + ". Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
         guardarEnRanking();
     }
 
@@ -107,8 +109,16 @@ public class Juego {
             break;
         }
 
-        consola.mostrarMensaje("Ingresa tu respuesta (A, B, C o D): ");
-        String respuesta = consola.leerOpcionPregunta();
+        consola.mostrarMensaje("Ingresa tu respuesta (A, B, C o D) o R para retirarte con "
+                + jugador.mostrarPremioAcumulado() + ": ");
+        String respuesta = consola.leerRespuestaORetiro();
+
+        // al retirarse no se cae al nivel seguro, se lleva lo que tenia ganado
+        if (respuesta.equals("R")) {
+            seRetiro = true;
+            consola.mostrarMensaje("Te retiraste. Te llevas " + jugador.mostrarPremioAcumulado() + ".\n");
+            return false;
+        }
 
         if (preguntaActual.verificarRespuesta(respuesta)) {
             if (!usoComodinEnRonda) {
