@@ -17,7 +17,7 @@ public class ComodinPublico extends Comodin {
 
     // este constructor deja pasar un Random con semilla para poder probarlo siempre igual
     public ComodinPublico(Random azar) {
-        super("Ayuda del publico");
+        super("Ayuda del publico", 500000L);
         this.azar = azar;
         this.porcentajes = new int[4];
     }
