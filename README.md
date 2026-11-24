@@ -11,7 +11,9 @@ salen al azar de un banco de más de 700 preguntas guardadas en `banco_preguntas
 
 - **Premios:** cada nivel paga más que el anterior, desde $100,000 hasta $100,000,000.
 - **Multiplicador:** si aciertas 2 o más preguntas seguidas sin usar comodines, la siguiente paga x2, x3, x4...
-- **Niveles seguros:** 3, 6 y 9. Si fallas, te quedas con lo que tenías en el último nivel seguro que pasaste.
+- **Fallar:** si respondes mal pierdes todo lo que llevabas, y esa plata se va a **la bolsa**.
+- **La bolsa:** junta lo que pierden todos los que fallan. El primero que responda las 12 preguntas
+  se la lleva completa, se le suma a su premio y queda en el ranking. Después la bolsa vuelve a $0.
 - **Retirarse:** en cualquier pregunta puedes escribir `R` y te llevas lo que llevas ganado.
 - **Comodines:** empiezas con uno de cada tipo y puedes tener máximo 2 de cada uno.
   Después de cada pregunta se abre una tienda para comprar más con lo que llevas ganado.
@@ -23,7 +25,8 @@ salen al azar de un banco de más de 700 preguntas guardadas en `banco_preguntas
 | 50/50              | Quita dos opciones incorrectas                   | $1,000,000 |
 
 Pueden jugar varios concursantes, uno detrás de otro. Al final de cada partida se muestra el
-top 5 de mejores puntajes. Los puntajes se guardan en `puntajes.txt`, así que no se pierden al cerrar el juego.
+top 5 de mejores puntajes. Los puntajes se guardan en `puntajes.txt` y la bolsa en `bolsa.txt`, así que no se
+pierden al cerrar el juego.
 
 ## Requisitos
 
@@ -51,7 +54,7 @@ En la terminal de Windows las tildes y la ñ se ven bien sin configurar nada.
 src/
 ├── estructuras/   Nodo, lista enlazada, pila, cola y árbol binario de búsqueda
 ├── modelo/        Pregunta, jugador, comodines, escalera de premios y puntaje
-└── juego/         Main, juego, consola, banco y lector de preguntas, ranking y archivo de puntajes
+└── juego/         Main, juego, consola, banco y lector de preguntas, ranking, archivo de puntajes y bolsa
 banco_preguntas.txt   Las preguntas, una por línea: nivel;enunciado;A;B;C;D;correcta
 ```
 
@@ -62,7 +65,7 @@ Todas las estructuras las implementamos nosotros, son genéricas y no usan las d
 | Estructura     | Clase                              | Para qué se usa en el juego |
 |----------------|------------------------------------|-----------------------------|
 | Lista enlazada | `estructuras.ListaEnlazada`        | Las 4 opciones de cada pregunta (`Pregunta`) y los comodines del jugador (`Jugador`). El 50/50 recorre la lista de opciones para quitar dos incorrectas. |
-| Pila           | `estructuras.Pila`                 | Los niveles que va superando el jugador (`EscaleraPremios`). El de arriba es el último nivel pasado. |
+| Pila           | `estructuras.Pila`                 | Los niveles que va superando el jugador (`EscaleraPremios`). El de arriba es el último nivel pasado. Si falla, se desapilan todos y queda en 0. |
 | Cola           | `estructuras.Cola`                 | Las preguntas de cada nivel (`NivelPreguntas`). Para escoger una al azar se rota la cola un número aleatorio de veces; la que queda al frente es la que sale y vuelve al final. |
 | Árbol binario de búsqueda | `estructuras.ArbolBinarioBusqueda` | Dos usos: el banco de preguntas, ordenado por número de nivel (`BancoPreguntas`), y el ranking, ordenado por premio (`Ranking`). El top sale con el recorrido inorden inverso. |
 
@@ -71,6 +74,8 @@ Todas las estructuras las implementamos nosotros, son genéricas y no usan las d
 - `banco_preguntas.txt`: lo lee `LectorPreguntas` al iniciar el juego. Las líneas con errores se ignoran.
 - `puntajes.txt`: lo lee y lo escribe `ArchivoPuntajes`. Al terminar cada partida se cargan los puntajes que había y se vuelven a guardar con el nuevo.
   Si no existe, se crea solo.
+- `bolsa.txt`: lo lee y lo escribe `Bolsa`. Guarda un solo número, lo que tiene la bolsa. Se actualiza cada vez que
+  alguien falla o gana las 12. Si no existe o está dañado, la bolsa empieza en $0.
 
 ## Integrantes
 
