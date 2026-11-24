@@ -41,8 +41,9 @@ public class Jugador {
         escalera.subir();
     }
 
-    public void aplicarPenalidad(){ // Se maneja el progreso de los niveles y se aplica
-        escalera.caerNivelSeguro(); // la penalidad dependendiendo del nivel en el que se encuentre
+    // si falla pierde todo lo que llevaba, devuelve cuanto perdio para mandarlo a la bolsa
+    public long aplicarPenalidad(){
+        return escalera.perderTodo();
     }
 
     // Cuenta cuantos comodines de un tipo tiene

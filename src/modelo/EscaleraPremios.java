@@ -14,7 +14,6 @@ public class EscaleraPremios {
     private int rachaSinComodin;
     private int multiplicador;
     private long premioGanado; // guarda el premio acumulado con el multiplicador activo en cada ronda
-    private long premioNivelSeguro; // respaldo del premio acumulado al alcanzar un nivel seguro
     private Pila<Integer> nivelesSuperados; // cada nivel que se pasa se apila, el de arriba es el ultimo
 
     public EscaleraPremios() {
@@ -22,7 +21,6 @@ public class EscaleraPremios {
         this.rachaSinComodin = 0;
         this.multiplicador = 1;
         this.premioGanado = 0;
-        this.premioNivelSeguro = 0;
         this.nivelesSuperados = new Pila<>();
     }
 
@@ -31,10 +29,6 @@ public class EscaleraPremios {
         nivelesSuperados.apilar(nivelActual);
         long premioNivel = getValorNivel(nivelActual) * multiplicador;
         this.premioGanado += premioNivel; // suma el premio ganado en este nivel al acumulado
-
-        if (esNivelSeguro(nivelActual)) {
-            this.premioNivelSeguro = this.premioGanado;
-        }
     }
 
     // devuelve el valor base del nivel indicado (1 a 12)
@@ -60,27 +54,28 @@ public class EscaleraPremios {
             return false;
         }
         this.premioGanado -= costo;
-        if (this.premioNivelSeguro > this.premioGanado) {
-            this.premioNivelSeguro = this.premioGanado;
-        }
         return true;
     }
 
-    // al perder se van sacando niveles de la pila hasta llegar a un nivel seguro.
-    // si no habia llegado a ninguno, la pila queda vacia y se va sin nada
-    public void caerNivelSeguro(){
-        while (!nivelesSuperados.estaVacia() && !esNivelSeguro(nivelesSuperados.verCima())) {
+    // al fallar se pierde todo: se desapilan todos los niveles que habia pasado
+    // y vuelve a 0. devuelve lo que perdio para que se vaya a la bolsa
+    public long perderTodo(){
+        while (!nivelesSuperados.estaVacia()) {
             nivelesSuperados.desapilar();
         }
-        this.nivelActual = nivelesSuperados.estaVacia() ? 0 : nivelesSuperados.verCima();
+        long perdido = this.premioGanado;
+        this.nivelActual = 0;
         this.rachaSinComodin = 0;
         this.multiplicador = 1;
-        this.premioGanado = (this.nivelActual == 0) ? 0 : this.premioNivelSeguro;
+        this.premioGanado = 0;
+        return perdido;
     }
 
-    // los niveles seguros son el final de cada bloque: 3, 6 y 9
-    public boolean esNivelSeguro(int nivel) {
-        return nivel % 3 == 0;
+    // el que responde las 12 se lleva la bolsa, se suma a lo que gano
+    public void sumarBolsa(long valor) {
+        if (valor > 0) {
+            this.premioGanado += valor;
+        }
     }
 
     public int getNivelActual() {
