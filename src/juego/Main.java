@@ -9,16 +9,21 @@ public class Main {
         consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
         consola.mostrarMensaje("=========================================\n");
 
-        // 1. Se cargan las preguntas del archivo al banco (arbol de niveles con su cola de preguntas).
-        // se carga una sola vez, y como cada nivel es una cola, el siguiente jugador recibe otras preguntas
+        // Carga las preguntas desde el archivo banco_preguntas.txt ubicado en la raíz del proyecto.
+        // se carga una sola vez y sirve para todos los jugadores
         BancoPreguntas banco = new BancoPreguntas();
-        int cargadas = new LectorPreguntas("banco_preguntas.txt").cargar(banco);
+        LectorPreguntas lector = new LectorPreguntas("banco_preguntas.txt");
+        int cargadas = lector.cargar(banco);
+
         if (cargadas == 0) {
-            consola.mostrarMensaje("No hay preguntas para jugar, revisa el archivo banco_preguntas.txt\n");
+            consola.mostrarMensaje("No se cargaron preguntas desde banco_preguntas.txt. Verifica que el archivo esté en la raíz del proyecto.\n");
             return;
         }
 
-        // 2. Se juega una partida por jugador hasta que no quieran jugar mas
+        consola.mostrarMensaje("Banco cargado con éxito (" + cargadas + " preguntas en " + banco.cantidadNiveles() + " niveles).\n");
+
+        // Se juega una partida por jugador hasta que no quieran jugar mas.
+        // todos comparten la misma consola para evitar conflictos con Scanner
         do {
             String nombre = pedirNombre(consola);
             Juego juego = new Juego(nombre, banco, consola);
@@ -28,17 +33,13 @@ public class Main {
         consola.mostrarMensaje("\n¡Gracias por jugar!\n");
     }
 
-    // Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
+    // si el jugador no escribe nombre se le pone "Concursante"
     private static String pedirNombre(Consola consola) {
-        String nombre;
-        do {
-            consola.mostrarMensaje("\nIngresa tu nombre: ");
-            nombre = consola.leerEntrada().trim();
-
-            if (nombre.isEmpty()) {
-                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.\n");
-            }
-        } while (nombre.isEmpty());
+        consola.mostrarMensaje("\nIngresa tu nombre de concursante: ");
+        String nombre = consola.leerEntrada();
+        if (nombre.isEmpty()) {
+            nombre = "Concursante";
+        }
         return nombre;
     }
 
