@@ -13,12 +13,14 @@ public class EscaleraPremios {
     private int nivelActual;
     private int rachaSinComodin;
     private int multiplicador;
+    private long gastado; // lo que se ha gastado comprando comodines, se le descuenta al premio
     private Pila<Integer> nivelesSuperados; // cada nivel que se pasa se apila, el de arriba es el ultimo
 
     public EscaleraPremios() {
         this.nivelActual = 0;
         this.rachaSinComodin = 0;
         this.multiplicador = 1;
+        this.gastado = 0;
         this.nivelesSuperados = new Pila<>();
     }
 
@@ -31,12 +33,27 @@ public class EscaleraPremios {
         return "$" + String.format("%,d", getPremio());
     }
 
-    // lo que lleva ganado segun el ultimo nivel superado
+    // lo que lleva ganado segun el ultimo nivel superado, menos lo que gasto en comodines.
+    // si cae a un nivel seguro con menos plata de la que gasto, queda en 0 y no en negativo
     public long getPremio() {
         if (nivelActual == 0) {
             return 0;
         }
-        return PREMIOS[Math.min(nivelActual, PREMIOS.length) - 1];
+        long premioNivel = PREMIOS[Math.min(nivelActual, PREMIOS.length) - 1];
+        return Math.max(0, premioNivel - gastado);
+    }
+
+    // descuenta el precio si le alcanza. devuelve false si no tiene suficiente
+    public boolean pagar(long monto) {
+        if (monto > getPremio()) {
+            return false;
+        }
+        gastado += monto;
+        return true;
+    }
+
+    public long getGastado() {
+        return gastado;
     }
 
     // al perder se van sacando niveles de la pila hasta llegar a un nivel seguro.
