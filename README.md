@@ -73,7 +73,9 @@ Todas las estructuras las implementamos nosotros, son genéricas y no usan las d
 
 - `banco_preguntas.txt`: lo lee `LectorPreguntas` al iniciar el juego. Las líneas con errores se ignoran.
 - `puntajes.txt`: lo lee y lo escribe `ArchivoPuntajes`. Al terminar cada partida se cargan los puntajes que había y se vuelven a guardar con el nuevo.
-  Si no existe, se crea solo.
+  Si no existe, se crea solo. Los puntajes se guardan en **preorden** (nodo, izquierda, derecha): así, al cargarlos,
+  el árbol del ranking queda con la misma forma. Si se guardaran de mayor a menor, cada puntaje se iría a la izquierda
+  del anterior y el árbol quedaría como una lista.
 - `bolsa.txt`: lo lee y lo escribe `Bolsa`. Guarda un solo número, lo que tiene la bolsa. Se actualiza cada vez que
   alguien falla o gana las 12. Si no existe o está dañado, la bolsa empieza en $0.
 

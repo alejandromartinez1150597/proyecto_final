@@ -75,6 +75,23 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         inordenInversoRecursivo(actual.getIzquierdo(), resultado, limite); // al final los menores
     }
 
+    // recorrido preorden: primero el nodo, despues la izquierda y al final la derecha.
+    // si se insertan los datos en este mismo orden, el arbol queda con la misma forma
+    public ArrayList<T> recorrerPreorden() {
+        ArrayList<T> resultado = new ArrayList<>();
+        preordenRecursivo(raiz, resultado);
+        return resultado;
+    }
+
+    private void preordenRecursivo(NodoArbol<T> actual, ArrayList<T> resultado) {
+        if (actual == null) {
+            return;
+        }
+        resultado.add(actual.getDato()); // primero el nodo
+        preordenRecursivo(actual.getIzquierdo(), resultado); // despues los menores
+        preordenRecursivo(actual.getDerecho(), resultado); // y al final los mayores
+    }
+
     // la altura sirve para ver si el arbol quedo desbalanceado
     // balanceado: altura cerca de log2(n). desbalanceado: altura cerca de n
     public int altura() {
