@@ -1,70 +1,82 @@
-# Proyecto final — Trivia de escalera de premios
+# Proyecto final — Vuélvete Millonario
 
 Proyecto final de **Estructura de Datos**, Instituto Tecnológico Metropolitano (ITM), semestre 2026-2.
 Docente: William Giraldo.
 
 ## De qué se trata
 
-La idea es un juego de preguntas por consola con escalera de premios. El concursante va a
-responder 10 preguntas de dificultad creciente con 4 opciones cada una. Tendrá 3 comodines
-(50/50, ayuda del público y cambiar pregunta), podrá retirarse con lo que lleve ganado y, si falla,
-se queda con el premio del último nivel seguro. Varios concursantes juegan por turnos y al final
-se muestra el ranking, que se guardará en el archivo `puntajes.txt` para no perderlo al cerrar el juego.
+Es un juego de preguntas por consola con escalera de premios. Cada concursante responde
+12 preguntas de dificultad creciente, cada una con 4 opciones (A, B, C y D). Las preguntas
+salen al azar de un banco de más de 700 preguntas guardadas en `banco_preguntas.txt`.
 
-## Estado del proyecto
+- **Premios:** cada nivel paga más que el anterior, desde $100,000 hasta $100,000,000.
+- **Multiplicador:** si aciertas 2 o más preguntas seguidas sin usar comodines, la siguiente paga x2, x3, x4...
+- **Niveles seguros:** 3, 6 y 9. Si fallas, te quedas con lo que tenías en el último nivel seguro que pasaste.
+- **Retirarse:** en cualquier pregunta puedes escribir `R` y te llevas lo que llevas ganado.
+- **Comodines:** empiezas con uno de cada tipo y puedes tener máximo 2 de cada uno.
+  Después de cada pregunta se abre una tienda para comprar más con lo que llevas ganado.
 
-En desarrollo. Por ahora el programa solo muestra una pregunta de prueba por consola.
+| Comodín            | Qué hace                                         | Precio     |
+|--------------------|--------------------------------------------------|------------|
+| Ayuda del público  | Muestra qué porcentaje del público votó por cada opción | $500,000   |
+| Cambio de pregunta | Cambia la pregunta por otra del mismo nivel      | $750,000   |
+| 50/50              | Quita dos opciones incorrectas                   | $1,000,000 |
 
-| Parte | Estado |
-|---|---|
-| Consola y clase Pregunta | Hecho |
-| Lista enlazada | En desarrollo |
-| Pila y cola | Pendiente |
-| Árbol (banco de preguntas y ranking) | En desarrollo 
-| Comodines y escalera de premios | Pendiente |
-| Archivos de preguntas y puntajes | Pendiente |
-| Juego completo | Pendiente |
+Pueden jugar varios concursantes, uno detrás de otro. Al final de cada partida se muestra el
+top 5 de mejores puntajes. Los puntajes se guardan en `puntajes.txt`, así que no se pierden al cerrar el juego.
 
 ## Requisitos
 
 - Java **17** o superior (`java -version` para comprobar).
 - No usa librerías externas.
 
-## Cómo compilar y ejecutar
+## Cómo compilar y jugar
 
 Desde la raíz del repositorio:
 
 ```bash
-javac -d bin -sourcepath src src/juego/Main.java
+javac -encoding UTF-8 -d bin -sourcepath src src/juego/Main.java
 ```
 
 ```bash
 java -cp bin juego.Main
 ```
 
+El juego tiene que ejecutarse desde la raíz del repositorio, porque ahí está `banco_preguntas.txt`.
+En la terminal de Windows las tildes y la ñ se ven bien sin configurar nada.
+
 ## Estructura del proyecto
 
 ```
 src/
-├── estructuras/   Lista enlazada, pila, cola y árbol (con sus nodos)
-├── modelo/        Clases del juego (pregunta, concursante, comodines...)
-└── juego/         Lógica del juego, consola, archivos y Main
+├── estructuras/   Nodo, lista enlazada, pila, cola y árbol binario de búsqueda
+├── modelo/        Pregunta, jugador, comodines, escalera de premios y puntaje
+└── juego/         Main, juego, consola, banco y lector de preguntas, ranking y archivo de puntajes
+banco_preguntas.txt   Las preguntas, una por línea: nivel;enunciado;A;B;C;D;correcta
 ```
 
-## Dónde va cada estructura (lo planeado)
+## Dónde se usa cada estructura
 
-| Estructura      | Clase                              | Qué guarda en el juego |
-|-----------------|------------------------------------|------------------------|
-| Lista enlazada  | `estructuras.ListaEnlazada`        | Comodines disponibles y opciones de cada pregunta |
-| Pila            | `estructuras.Pila`                 | Escalera de premios ganados (retirarse y caer al nivel seguro) |
-| Cola            | `estructuras.Cola`                 | Concursantes en espera y preguntas de cada nivel |
-| Árbol           | `estructuras.ArbolBinarioBusqueda` | Banco de preguntas por nivel y ranking de premios |
+Todas las estructuras las implementamos nosotros, son genéricas y no usan las de `java.util`.
+
+| Estructura     | Clase                              | Para qué se usa en el juego |
+|----------------|------------------------------------|-----------------------------|
+| Lista enlazada | `estructuras.ListaEnlazada`        | Las 4 opciones de cada pregunta (`Pregunta`) y los comodines del jugador (`Jugador`). El 50/50 recorre la lista de opciones para quitar dos incorrectas. |
+| Pila           | `estructuras.Pila`                 | Los niveles que va superando el jugador (`EscaleraPremios`). El de arriba es el último nivel pasado. |
+| Cola           | `estructuras.Cola`                 | Las preguntas de cada nivel (`NivelPreguntas`). Para escoger una al azar se rota la cola un número aleatorio de veces; la que queda al frente es la que sale y vuelve al final. |
+| Árbol binario de búsqueda | `estructuras.ArbolBinarioBusqueda` | Dos usos: el banco de preguntas, ordenado por número de nivel (`BancoPreguntas`), y el ranking, ordenado por premio (`Ranking`). El top sale con el recorrido inorden inverso. |
+
+## Manejo de archivos
+
+- `banco_preguntas.txt`: lo lee `LectorPreguntas` al iniciar el juego. Las líneas con errores se ignoran.
+- `puntajes.txt`: lo lee y lo escribe `ArchivoPuntajes`. Al terminar cada partida se cargan los puntajes que había y se vuelven a guardar con el nuevo.
+  Si no existe, se crea solo.
 
 ## Integrantes
 
 | Nombre    | Usuario de GitHub          | Parte principal |
 |-----------|----------------------------|-----------------|
-| Martínez  | @alejandromartinez1150597  | Juego, consola, preguntas e integración (P1) |
+| Martínez  | @alejandromartinez1150597  | Juego, consola, escalera de premios, multiplicador y tienda de comodines (P1) |
 | Chica     | @Chika002                  | Nodo, lista enlazada y comodines (P2) |
 | Rubiano   | @Arubiano662               | Pila, cola, escalera de premios y lectura de preguntas (P3) |
 | Rivera    | @JuanAlejo-Rivera          | Árbol, banco de preguntas, ranking y archivo de puntajes (P4) |
