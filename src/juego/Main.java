@@ -31,13 +31,16 @@ public class Main {
         consola.mostrarTitulo("¡GRACIAS POR JUGAR!");
     }
 
-    // si el jugador no escribe nombre se le pone "Concursante"
+    // el nombre es obligatorio, si lo deja vacio se le vuelve a pedir
     private static String pedirNombre(Consola consola) {
-        consola.mostrarMensaje("\n Ingresa tu nombre de concursante: ");
-        String nombre = consola.leerEntrada();
-        if (nombre.isEmpty()) {
-            nombre = "Concursante";
-        }
+        String nombre;
+        do {
+            consola.mostrarMensaje("\n Ingresa tu nombre de concursante: ");
+            nombre = consola.leerEntrada();
+            if (nombre.isEmpty()) {
+                consola.mostrarMensaje(" >> Debes escribir un nombre para continuar.\n");
+            }
+        } while (nombre.isEmpty());
         return nombre;
     }
 
