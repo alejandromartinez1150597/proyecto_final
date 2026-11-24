@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-// lee el archivo preguntas.txt y mete cada pregunta en el banco.
+// lee el archivo banco_preguntas.txt y mete cada pregunta en el banco.
 // cada linea del archivo es: nivel;enunciado;opcionA;opcionB;opcionC;opcionD;correcta
 public class LectorPreguntas {
 
