@@ -57,12 +57,20 @@ public class Jugador {
         return contarComodin(nombreComodin) < MAX_COMODIN_TIPO;
     }
 
-    // Agrega el comodín si no supera el límite de 2
+    // revisa si con lo que lleva ganado le alcanza para pagar ese comodin
+    public boolean leAlcanzaPara(Comodin comodin) {
+        return comodin.getPrecio() <= escalera.getPremio();
+    }
+
+    // Agrega el comodín si no supera el límite de 2 y si le alcanza la plata, que se descuenta del premio
     public boolean comprarComodin(Comodin nuevoComodin) {
         if (nuevoComodin == null) {
             return false;
         }
         if (!puedeComprarComodin(nuevoComodin.getNombre())) {
+            return false;
+        }
+        if (!escalera.pagar(nuevoComodin.getPrecio())) {
             return false;
         }
         comodines.agregar(nuevoComodin);

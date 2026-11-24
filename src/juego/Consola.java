@@ -27,4 +27,15 @@ public class Consola {
             mostrarMensaje("Opción inválida. Por favor, ingresa A, B, C o D:");
         }
     }
+
+    // igual que la anterior pero tambien acepta R, que es la opcion para retirarse
+    public String leerRespuestaORetiro(){
+        while (true) {
+            String entrada = leerEntrada().toUpperCase();
+            if (entrada.matches("[A-DR]")){
+                return entrada;
+            }
+            mostrarMensaje("Opción inválida. Ingresa A, B, C, D o R para retirarte: ");
+        }
+    }
 }

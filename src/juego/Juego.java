@@ -8,6 +8,7 @@ public class Juego {
     private Consola consola;
     private Jugador jugador;
     private BancoPreguntas banco;
+    private boolean seRetiro; // queda en true si el jugador decide plantarse
 
     public Juego(String nombreJugador) {
         this.consola = new Consola();
@@ -52,7 +53,8 @@ public class Juego {
             }
         }
 
-        consola.mostrarMensaje("\nPartida finalizada. Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
+        String comoTermino = seRetiro ? " (se retiró)" : "";
+        consola.mostrarMensaje("\nPartida finalizada" + comoTermino + ". Premio final: " + jugador.mostrarPremioAcumulado() + "\n");
         guardarEnRanking();
     }
 
@@ -81,42 +83,59 @@ public class Juego {
                 consola.mostrarMensaje(preguntaActual.getOpciones().obtener(i) + "\n");
             }
 
-            int cantCambio = jugador.contarComodin("Cambio de pregunta");
-            if (cantCambio > 0) {
-                consola.mostrarMensaje("\n¿Deseas usar 'Cambio de pregunta' (tienes " + cantCambio
-                        + "/2)? Esto reiniciará tu multiplicador. (S/N): ");
-                String eleccion = consola.leerEntrada().toUpperCase();
-
-                if (eleccion.equals("S")) {
-                    Comodin consumido = jugador.usarYConsumirComodin("Cambio de pregunta");
-                    if (consumido instanceof ComodinCambioPregunta) {
-                        Pregunta nueva = ((ComodinCambioPregunta) consumido).cambiarPregunta(preguntaActual, banco);
-                        usoComodinEnRonda = true;
-                        jugador.resetearMultiplicador();
-
-                        if (nueva != null && !nueva.getEnunciado().equals(preguntaActual.getEnunciado())) {
-                            preguntaActual = nueva;
-                            consola.mostrarMensaje("¡Pregunta cambiada! Multiplicador ahora en x" + jugador.getMultiplicador() + ".\n");
-                            continue;
-                        } else {
-                            consola.mostrarMensaje("No había otra pregunta distinta disponible en este nivel; mantienes la actual.\n");
-                        }
-                    }
-                }
+            String eleccion = elegirComodin(preguntaActual);
+            if (eleccion.isEmpty()) { // no tiene comodines o decidio responder de una
+                break;
             }
-            break;
+
+            // cualquier comodin que use le quita el multiplicador
+            usoComodinEnRonda = true;
+            jugador.resetearMultiplicador();
+
+            if (eleccion.equals("1")) {
+                Comodin consumido = jugador.usarYConsumirComodin("50/50");
+                consumido.usar(preguntaActual);
+                consola.mostrarMensaje("¡Se quitaron dos respuestas incorrectas!\n");
+            } else if (eleccion.equals("2")) {
+                Comodin consumido = jugador.usarYConsumirComodin("Cambio de pregunta");
+                Pregunta nueva = ((ComodinCambioPregunta) consumido).cambiarPregunta(preguntaActual, banco);
+                if (nueva != null && !nueva.getEnunciado().equals(preguntaActual.getEnunciado())) {
+                    preguntaActual = nueva;
+                    consola.mostrarMensaje("¡Pregunta cambiada!\n");
+                } else {
+                    consola.mostrarMensaje("No había otra pregunta distinta disponible en este nivel; mantienes la actual.\n");
+                }
+            } else if (eleccion.equals("3")) {
+                ComodinPublico publico = (ComodinPublico) jugador.usarYConsumirComodin("Ayuda del publico");
+                publico.usar(preguntaActual);
+                consola.mostrarMensaje("El público votó:  " + publico.getResultado() + "\n");
+            }
+            // se vuelve a mostrar la pregunta como quedo despues del comodin
         }
 
-        consola.mostrarMensaje("Ingresa tu respuesta (A, B, C o D): ");
-        String respuesta = consola.leerOpcionPregunta();
+        consola.mostrarMensaje("Ingresa tu respuesta (A, B, C o D) o R para retirarte con "
+                + jugador.mostrarPremioAcumulado() + ": ");
+        String respuesta = consola.leerRespuestaORetiro();
+
+        // al retirarse no se cae al nivel seguro, se lleva lo que tenia ganado
+        if (respuesta.equals("R")) {
+            seRetiro = true;
+            consola.mostrarMensaje("Te retiraste. Te llevas " + jugador.mostrarPremioAcumulado() + ".\n");
+            return false;
+        }
 
         if (preguntaActual.verificarRespuesta(respuesta)) {
             if (!usoComodinEnRonda) {
                 jugador.registrarAciertoSinComodin();
             }
+            long bonoAntes = jugador.getEscalera().getBono();
             jugador.avanzarNivel();
+            long ganoDeBono = jugador.getEscalera().getBono() - bonoAntes;
             consola.mostrarMensaje("¡Correcto! Multiplicador: x" + jugador.getMultiplicador()
                     + " | Premio: " + jugador.mostrarPremioAcumulado() + "\n");
+            if (ganoDeBono > 0) {
+                consola.mostrarMensaje("Por el x2 ganaste $" + String.format("%,d", ganoDeBono) + " extra en este nivel.\n");
+            }
             return true;
         } else {
             jugador.aplicarPenalidad();
@@ -126,37 +145,83 @@ public class Juego {
         }
     }
 
-    // Se añade menú de compra de comodines post nivel
+    // muestra los comodines que tiene y devuelve "1", "2" o "3" segun el que escoja.
+    // devuelve "" si no tiene ninguno o si presiona Enter para responder de una
+    private String elegirComodin(Pregunta pregunta) {
+        int cant5050 = jugador.contarComodin("50/50");
+        int cantCambio = jugador.contarComodin("Cambio de pregunta");
+        int cantPublico = jugador.contarComodin("Ayuda del publico");
+        if (cant5050 + cantCambio + cantPublico == 0) {
+            return "";
+        }
+
+        while (true) {
+            consola.mostrarMensaje("\nTus comodines: 1. 50/50 (" + cant5050 + ")   2. Cambio de pregunta (" + cantCambio
+                    + ")   3. Ayuda del público (" + cantPublico + ")\n");
+            consola.mostrarMensaje("Usar un comodín reinicia tu multiplicador. Escribe 1, 2 o 3, o solo Enter para responder: ");
+            String opcion = consola.leerEntrada();
+
+            if (opcion.isEmpty()) {
+                return "";
+            } else if (opcion.equals("1") && cant5050 > 0) {
+                if (pregunta.getOpciones().tamano() <= 2) { // ya se le habia aplicado un 50/50
+                    consola.mostrarMensaje("Ya solo quedan dos opciones, el 50/50 no serviría.\n");
+                } else {
+                    return opcion;
+                }
+            } else if ((opcion.equals("2") && cantCambio > 0) || (opcion.equals("3") && cantPublico > 0)) {
+                return opcion;
+            } else {
+                consola.mostrarMensaje("No tienes ese comodín o la opción no es válida.\n");
+            }
+        }
+    }
+
+    // Se añade menú de compra de comodines post nivel. cada comodin se paga con lo que lleva ganado
     private void menuCompraComodin() {
         while (true) {
-            int cant5050 = jugador.contarComodin("50/50");
-            int cantCambio = jugador.contarComodin("Cambio de pregunta");
-
             consola.mostrarMensaje("\n--- TIENDA COMODINES (Máx. 2 por comodín) ---\n");
-            consola.mostrarMensaje("1. Comprar 50/50 (Tienes: " + cant5050 + "/2)\n");
-            consola.mostrarMensaje("2. Comprar Cambio de pregunta (Tienes: " + cantCambio + "/2)\n");
-            consola.mostrarMensaje("3. Continuar al siguiente nivel\n");
-            consola.mostrarMensaje("Elige una opción (1, 2 o 3): ");
+            consola.mostrarMensaje("Tu dinero: " + jugador.mostrarPremioAcumulado() + "\n");
+            consola.mostrarMensaje("1. Comprar 50/50 - " + precio(new Comodin5050())
+                    + " (Tienes: " + jugador.contarComodin("50/50") + "/2)\n");
+            consola.mostrarMensaje("2. Comprar Cambio de pregunta - " + precio(new ComodinCambioPregunta())
+                    + " (Tienes: " + jugador.contarComodin("Cambio de pregunta") + "/2)\n");
+            consola.mostrarMensaje("3. Comprar Ayuda del público - " + precio(new ComodinPublico())
+                    + " (Tienes: " + jugador.contarComodin("Ayuda del publico") + "/2)\n");
+            consola.mostrarMensaje("4. Continuar al siguiente nivel\n");
+            consola.mostrarMensaje("Elige una opción (1, 2, 3 o 4): ");
 
             String opcion = consola.leerEntrada();
 
             if (opcion.equals("1")) {
-                if (jugador.comprarComodin(new Comodin5050())) {
-                    consola.mostrarMensaje("¡Compraste un comodín 50/50! Ahora tienes " + jugador.contarComodin("50/50") + "/2.\n");
-                } else {
-                    consola.mostrarMensaje("No puedes comprar más: ya tienes el máximo de 2 comodines 50/50.\n");
-                }
+                comprar(new Comodin5050());
             } else if (opcion.equals("2")) {
-                if (jugador.comprarComodin(new ComodinCambioPregunta())) {
-                    consola.mostrarMensaje("¡Compraste un comodín Cambio de pregunta! Ahora tienes " + jugador.contarComodin("Cambio de pregunta") + "/2.\n");
-                } else {
-                    consola.mostrarMensaje("No puedes comprar más: ya tienes el máximo de 2 comodines Cambio de pregunta.\n");
-                }
+                comprar(new ComodinCambioPregunta());
             } else if (opcion.equals("3")) {
+                comprar(new ComodinPublico());
+            } else if (opcion.equals("4")) {
                 break;
             } else {
-                consola.mostrarMensaje("Opción inválida. Selecciona 1, 2 o 3.\n");
+                consola.mostrarMensaje("Opción inválida. Selecciona 1, 2, 3 o 4.\n");
             }
         }
+    }
+
+    // intenta comprar el comodin y dice por que no se pudo si falla
+    private void comprar(Comodin comodin) {
+        String nombre = comodin.getNombre();
+        if (!jugador.puedeComprarComodin(nombre)) {
+            consola.mostrarMensaje("No puedes comprar más: ya tienes el máximo de 2 comodines " + nombre + ".\n");
+        } else if (!jugador.leAlcanzaPara(comodin)) {
+            consola.mostrarMensaje("No te alcanza: el " + nombre + " cuesta " + precio(comodin)
+                    + " y tienes " + jugador.mostrarPremioAcumulado() + ".\n");
+        } else if (jugador.comprarComodin(comodin)) {
+            consola.mostrarMensaje("¡Compraste un comodín " + nombre + "! Ahora tienes " + jugador.contarComodin(nombre)
+                    + "/2. Te quedan " + jugador.mostrarPremioAcumulado() + ".\n");
+        }
+    }
+
+    private String precio(Comodin comodin) {
+        return "$" + String.format("%,d", comodin.getPrecio());
     }
 }
