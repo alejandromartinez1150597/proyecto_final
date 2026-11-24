@@ -9,6 +9,7 @@ public class Juego {
     private Jugador jugador;
     private BancoPreguntas banco;
     private boolean seRetiro; // queda en true si el jugador decide plantarse
+    private Bolsa bolsa = new Bolsa("bolsa.txt"); // lo que pierden los demas, se la lleva el que gane las 12
 
     public Juego(String nombreJugador) {
         this.consola = new Consola();
@@ -29,12 +30,15 @@ public class Juego {
 
     // Este metodo inicia el ciclo de la partida
     public void iniciarPartida() {
+        bolsa.cargar();
         consola.mostrarTitulo("¡BIENVENIDO, " + jugador.getNombre().toUpperCase() + "!");
         consola.mostrarMensaje(" - Responde 12 preguntas, cada una mas dificil y mejor pagada.\n");
-        consola.mostrarMensaje(" - Niveles seguros: 3, 6 y 9. Si fallas, caes al ultimo que pasaste.\n");
+        consola.mostrarMensaje(" - Si fallas, pierdes todo lo que llevas y se va a la bolsa.\n");
+        consola.mostrarMensaje(" - Si respondes las 12, te llevas la bolsa completa.\n");
         consola.mostrarMensaje(" - Aciertos seguidos sin comodines suben tu multiplicador (x2, x3...).\n");
         consola.mostrarMensaje(" - Empiezas con 1 comodin de cada tipo y puedes comprar mas.\n");
         consola.mostrarMensaje(" - En cualquier pregunta puedes escribir R para retirarte.\n");
+        consola.mostrarMensaje("\n La bolsa tiene " + Consola.dinero(bolsa.getMonto()) + ".\n");
 
         boolean completo = false; // queda en true si responde bien las 12
         for (int nivel = 1; nivel <= 12; nivel++) {
@@ -54,6 +58,14 @@ public class Juego {
             } else {
                 completo = true;
             }
+        }
+
+        // el que responde las 12 se lleva la bolsa y queda vacia para los siguientes
+        if (completo && bolsa.getMonto() > 0) {
+            long premioBolsa = bolsa.entregar();
+            jugador.getEscalera().sumarBolsa(premioBolsa);
+            bolsa.guardar();
+            consola.mostrarMensaje("\n >> ¡TE LLEVAS LA BOLSA! Se suman " + Consola.dinero(premioBolsa) + " a tu premio.\n");
         }
 
         String resultado;
@@ -172,7 +184,7 @@ public class Juego {
                 + jugador.mostrarPremioAcumulado() + ": ");
         String respuesta = consola.leerRespuestaORetiro();
 
-        // al retirarse no se cae al nivel seguro, se lleva lo que tenia ganado
+        // al retirarse no pierde nada, se lleva lo que tenia ganado
         if (respuesta.equals("R")) {
             seRetiro = true;
             consola.mostrarMensaje("\n >> Te retiraste. Te llevas " + jugador.mostrarPremioAcumulado() + ".\n");
@@ -194,9 +206,17 @@ public class Juego {
             }
             return true;
         } else {
-            jugador.aplicarPenalidad();
+            // pierde todo y eso se va a la bolsa
+            long perdido = jugador.aplicarPenalidad();
+            bolsa.agregar(perdido);
+            bolsa.guardar();
             consola.mostrarMensaje("\n >> INCORRECTO. La respuesta era " + textoOpcion(preguntaActual) + ".\n");
-            consola.mostrarMensaje(" >> Caes al ultimo nivel seguro con " + jugador.mostrarPremioAcumulado() + ".\n");
+            if (perdido > 0) {
+                consola.mostrarMensaje(" >> Pierdes todo: " + Consola.dinero(perdido) + " se van a la bolsa.\n");
+            } else {
+                consola.mostrarMensaje(" >> Te vas sin nada.\n");
+            }
+            consola.mostrarMensaje(" >> La bolsa ahora tiene " + Consola.dinero(bolsa.getMonto()) + ".\n");
             return false;
         }
     }
