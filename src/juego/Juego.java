@@ -128,9 +128,14 @@ public class Juego {
             if (!usoComodinEnRonda) {
                 jugador.registrarAciertoSinComodin();
             }
+            long bonoAntes = jugador.getEscalera().getBono();
             jugador.avanzarNivel();
+            long ganoDeBono = jugador.getEscalera().getBono() - bonoAntes;
             consola.mostrarMensaje("¡Correcto! Multiplicador: x" + jugador.getMultiplicador()
                     + " | Premio: " + jugador.mostrarPremioAcumulado() + "\n");
+            if (ganoDeBono > 0) {
+                consola.mostrarMensaje("Por el x2 ganaste $" + String.format("%,d", ganoDeBono) + " extra en este nivel.\n");
+            }
             return true;
         } else {
             jugador.aplicarPenalidad();
