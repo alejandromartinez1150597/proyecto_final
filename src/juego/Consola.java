@@ -14,6 +14,31 @@ public class Consola {
         System.out.print(mensaje); // Se usa para imprimir los mensajes del juego.
     }
 
+    // ancho de las lineas que encierran los titulos y secciones
+    private static final int ANCHO = 56;
+
+    // titulo grande centrado entre dos lineas de =
+    public void mostrarTitulo(String texto){
+        String linea = "=".repeat(ANCHO);
+        int espacios = Math.max(0, (ANCHO - texto.length()) / 2);
+        mostrarMensaje("\n" + linea + "\n" + " ".repeat(espacios) + texto + "\n" + linea + "\n");
+    }
+
+    // encabezado de una parte del juego (pregunta, tienda...) entre lineas de -
+    public void mostrarSeccion(String... renglones){
+        String linea = "-".repeat(ANCHO);
+        mostrarMensaje("\n" + linea + "\n");
+        for (String renglon : renglones) {
+            mostrarMensaje(" " + renglon + "\n");
+        }
+        mostrarMensaje(linea + "\n");
+    }
+
+    // convierte un valor a texto de plata, ejemplo 1500000 -> $1,500,000
+    public static String dinero(long valor){
+        return "$" + String.format("%,d", valor);
+    }
+
     public String leerEntrada(){
         return scanner.nextLine().trim(); // Lee los datos ingresados del jugador.
     }
@@ -35,7 +60,7 @@ public class Consola {
             if (entrada.matches("[A-DR]")){
                 return entrada;
             }
-            mostrarMensaje("Opción inválida. Ingresa A, B, C, D o R para retirarte: ");
+            mostrarMensaje(" Opción inválida. Ingresa A, B, C, D o R para retirarte: ");
         }
     }
 }

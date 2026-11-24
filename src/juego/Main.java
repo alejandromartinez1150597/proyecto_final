@@ -5,9 +5,7 @@ public class Main {
     public static void main(String[] args) {
         Consola consola = new Consola();
 
-        consola.mostrarMensaje("=========================================\n");
-        consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
-        consola.mostrarMensaje("=========================================\n");
+        consola.mostrarTitulo("VUELVETE MILLONARIO");
 
         // Carga las preguntas desde el archivo banco_preguntas.txt ubicado en la raíz del proyecto.
         // se carga una sola vez y sirve para todos los jugadores
@@ -20,7 +18,7 @@ public class Main {
             return;
         }
 
-        consola.mostrarMensaje("Banco cargado con éxito (" + cargadas + " preguntas en " + banco.cantidadNiveles() + " niveles).\n");
+        consola.mostrarMensaje(" " + cargadas + " preguntas listas en " + banco.cantidadNiveles() + " niveles.\n");
 
         // Se juega una partida por jugador hasta que no quieran jugar mas.
         // todos comparten la misma consola para evitar conflictos con Scanner
@@ -30,12 +28,12 @@ public class Main {
             juego.iniciarPartida();
         } while (quiereOtraPartida(consola));
 
-        consola.mostrarMensaje("\n¡Gracias por jugar!\n");
+        consola.mostrarTitulo("¡GRACIAS POR JUGAR!");
     }
 
     // si el jugador no escribe nombre se le pone "Concursante"
     private static String pedirNombre(Consola consola) {
-        consola.mostrarMensaje("\nIngresa tu nombre de concursante: ");
+        consola.mostrarMensaje("\n Ingresa tu nombre de concursante: ");
         String nombre = consola.leerEntrada();
         if (nombre.isEmpty()) {
             nombre = "Concursante";
@@ -46,7 +44,7 @@ public class Main {
     // al terminar cada partida se pregunta si juega otra persona, solo se acepta S o N
     private static boolean quiereOtraPartida(Consola consola) {
         while (true) {
-            consola.mostrarMensaje("\n¿Quiere jugar otro concursante? (S/N): ");
+            consola.mostrarMensaje("\n ¿Quiere jugar otro concursante? (S/N): ");
             String respuesta = consola.leerEntrada().toUpperCase();
             if (respuesta.equals("S")) {
                 return true;
@@ -54,7 +52,7 @@ public class Main {
             if (respuesta.equals("N")) {
                 return false;
             }
-            consola.mostrarMensaje("Opción inválida. Escribe S o N.\n");
+            consola.mostrarMensaje(" Opción inválida. Escribe S o N.\n");
         }
     }
 }

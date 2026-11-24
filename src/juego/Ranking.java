@@ -32,9 +32,11 @@ public class Ranking {
         }
 
         ArrayList<Puntaje> top = obtenerTop(cantidad);
-        String texto = "=== MEJORES PUNTAJES ===\n";
+        // cada fila queda alineada: puesto, nombre y premio con separador de miles
+        String texto = " MEJORES PUNTAJES\n";
         for (int i = 0; i < top.size(); i++) {
-            texto += (i + 1) + ". " + top.get(i) + "\n";
+            Puntaje p = top.get(i);
+            texto += String.format("  %d. %-20s %15s%n", i + 1, p.getNombre(), Consola.dinero(p.getPremio()));
         }
         return texto;
     }
