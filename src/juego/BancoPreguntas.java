@@ -3,15 +3,18 @@ package juego;
 import estructuras.ArbolBinarioBusqueda;
 import estructuras.Cola;
 import modelo.Pregunta;
+import java.util.Random;
 
 // guarda todas las preguntas del juego organizadas por nivel.
 // el arbol sirve para encontrar rapido el nivel y la cola para sacar las preguntas en orden
 public class BancoPreguntas {
 
     private ArbolBinarioBusqueda<NivelPreguntas> niveles;
+    private Random azar;
 
     public BancoPreguntas() {
         this.niveles = new ArbolBinarioBusqueda<>();
+        this.azar = new Random();
     }
 
     public void agregarPregunta(Pregunta pregunta) {
@@ -23,14 +26,19 @@ public class BancoPreguntas {
         nivel.getPreguntas().encolar(pregunta);
     }
 
-    // saca la siguiente pregunta del nivel y la vuelve a meter al final de la cola.
-    // asi las preguntas van rotando y no se repiten hasta que salgan todas las de ese nivel
+    // saca una pregunta al azar del nivel rotando la cola y la vuelve a meter al final.
+    // asi las preguntas salen de forma aleatoria en cada ejecucion
     public Pregunta siguientePregunta(int numeroNivel) {
         if (!hayPreguntas(numeroNivel)) {
             return null;
         }
 
         Cola<Pregunta> cola = buscarNivel(numeroNivel).getPreguntas();
+        int rotaciones = azar.nextInt(cola.tamanio());
+        for (int i = 0; i < rotaciones; i++) {
+            cola.encolar(cola.desencolar());
+        }
+
         Pregunta pregunta = cola.desencolar();
         cola.encolar(pregunta);
         return pregunta;
@@ -97,7 +105,10 @@ public class BancoPreguntas {
             return null;
         }
         int total = cantidadPreguntas(numeroNivel);
-        for (int i = 0; i < total; i++) {
+        if (total == 1) {
+            return siguientePregunta(numeroNivel);
+        }
+        for (int i = 0; i < total * 3; i++) {
             Pregunta candidata = siguientePregunta(numeroNivel);
             if (candidata != null && !candidata.getEnunciado().equals(enunciadoActual)) {
                 return candidata;

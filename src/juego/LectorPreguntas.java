@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 // lee el archivo preguntas.txt y mete cada pregunta en el banco.
 // cada linea del archivo es: nivel;enunciado;opcionA;opcionB;opcionC;opcionD;correcta
@@ -27,6 +29,7 @@ public class LectorPreguntas {
         int cargadas = 0;
         try {
             List<String> lineas = Files.readAllLines(ruta, StandardCharsets.UTF_8);
+            Collections.shuffle(lineas, new Random()); // mezcla aleatoriamente todas las preguntas al cargar
             for (String linea : lineas) {
                 Pregunta pregunta = convertirLinea(linea);
                 if (pregunta != null) {
@@ -42,7 +45,7 @@ public class LectorPreguntas {
 
     // convierte una linea del archivo en una Pregunta. si algo esta mal devuelve null y se salta
     private Pregunta convertirLinea(String linea) {
-        linea = linea.replace("﻿", ""); // algunos editores meten este caracter invisible al inicio
+        linea = linea.replace("\uFEFF", ""); // algunos editores meten este caracter invisible al inicio
         if (linea.isBlank()) {
             return null;
         }

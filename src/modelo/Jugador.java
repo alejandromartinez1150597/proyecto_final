@@ -11,8 +11,13 @@ public class Jugador {
 
     public Jugador(String nombre){
         this.nombre = nombre;
-        this.comodines = new ListaEnlazada();
+        this.comodines = new ListaEnlazada<>();
         this.escalera = new EscaleraPremios();
+
+        // El jugador empieza con un comodín de cada tipo
+        this.comodines.agregar(new Comodin5050());
+        this.comodines.agregar(new ComodinPublico());
+        this.comodines.agregar(new ComodinCambioPregunta());
     }
 
     // Se utilizan getters para acceder a los datos del jugador, ya que los atributtos son privados
@@ -20,7 +25,7 @@ public class Jugador {
         return nombre;
     }
 
-    public ListaEnlazada getComodines(){
+    public ListaEnlazada<Comodin> getComodines(){
         return comodines;
     }
 
@@ -40,7 +45,7 @@ public class Jugador {
         escalera.caerNivelSeguro(); // la penalidad dependendiendo del nivel en el que se encuentre
     }
 
-    // Cuenta cuabtos comodines de un tipo tiene
+    // Cuenta cuantos comodines de un tipo tiene
     public int contarComodin(String nombreComodin) {
         int total = 0;
         for (int i = 0; i < comodines.tamano(); i++) {
@@ -57,12 +62,7 @@ public class Jugador {
         return contarComodin(nombreComodin) < MAX_COMODIN_TIPO;
     }
 
-    // revisa si con lo que lleva ganado le alcanza para pagar ese comodin
-    public boolean leAlcanzaPara(Comodin comodin) {
-        return comodin.getPrecio() <= escalera.getPremio();
-    }
-
-    // Agrega el comodín si no supera el límite de 2 y si le alcanza la plata, que se descuenta del premio
+    // Agrega el comodín si no supera el límite de 2 y tiene saldo suficiente
     public boolean comprarComodin(Comodin nuevoComodin) {
         if (nuevoComodin == null) {
             return false;
@@ -70,7 +70,7 @@ public class Jugador {
         if (!puedeComprarComodin(nuevoComodin.getNombre())) {
             return false;
         }
-        if (!escalera.pagar(nuevoComodin.getPrecio())) {
+        if (!escalera.descontarCompra(nuevoComodin.getPrecio())) {
             return false;
         }
         comodines.agregar(nuevoComodin);
