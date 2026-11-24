@@ -9,27 +9,57 @@ public class Main {
         consola.mostrarMensaje("   VUELVETE MILLONARIO \n");
         consola.mostrarMensaje("=========================================\n");
 
-        // 1. Jugardor ingresa nombre obligatoriamente (trim() detecta nombre de solo espacios, detectado como vacio)
-        String nombre;
-        do {
-            consola.mostrarMensaje("Ingresa tu nombre: ");
-            nombre = consola.leerEntrada().trim();
-
-            if (nombre.isEmpty()) {
-                consola.mostrarMensaje("Error: debes ingresar un nombre para continuar.\n");
-            }
-        } while (nombre.isEmpty());
-
-        // 2. Se cargan las preguntas del archivo al banco (arbol de niveles con su cola de preguntas)
+        // Carga las preguntas desde el archivo banco_preguntas.txt ubicado en la raíz del proyecto.
+        // se carga una sola vez y sirve para todos los jugadores
         BancoPreguntas banco = new BancoPreguntas();
-        int cargadas = new LectorPreguntas("banco_preguntas.txt").cargar(banco);
+        LectorPreguntas lector = new LectorPreguntas("banco_preguntas.txt");
+        int cargadas = lector.cargar(banco);
+
         if (cargadas == 0) {
-            consola.mostrarMensaje("No hay preguntas para jugar, revisa el archivo banco_preguntas.txt\n");
+            consola.mostrarMensaje("No se cargaron preguntas desde banco_preguntas.txt. Verifica que el archivo esté en la raíz del proyecto.\n");
             return;
         }
 
-        // 3. Se crea el juego con la misma consola y se inicia la partida
-        Juego juego = new Juego(nombre, banco, consola);
-        juego.iniciarPartida();
+        consola.mostrarMensaje("Banco cargado con éxito (" + cargadas + " preguntas en " + banco.cantidadNiveles() + " niveles).\n");
+
+        // Se juega una partida por jugador hasta que no quieran jugar mas.
+        // todos comparten la misma consola para evitar conflictos con Scanner
+        do {
+            String nombre = pedirNombre(consola);
+            Juego juego = new Juego(nombre, banco, consola);
+            juego.iniciarPartida();
+        } while (quiereOtraPartida(consola));
+
+        consola.mostrarMensaje("\n¡Gracias por jugar!\n");
+    }
+
+    // si el jugador no escribe nombre se le pone "Concursante"
+    private static String pedirNombre(Consola consola) {
+        String nombre;
+        do {
+            consola.mostrarMensaje("\nIngresa tu nombre: ");
+            nombre = consola.leerEntrada().trim();
+            if (nombre.isEmpty()) {
+                consola.mostrarMensaje("\nError: debes ingresar un nombre para continuar");
+                ;
+            }
+        } while (nombre.isEmpty());
+
+        return nombre;
+    }
+
+    // al terminar cada partida se pregunta si juega otra persona, solo se acepta S o N
+    private static boolean quiereOtraPartida(Consola consola) {
+        while (true) {
+            consola.mostrarMensaje("\n¿Quiere jugar otro concursante? (S/N): ");
+            String respuesta = consola.leerEntrada().toUpperCase();
+            if (respuesta.equals("S")) {
+                return true;
+            }
+            if (respuesta.equals("N")) {
+                return false;
+            }
+            consola.mostrarMensaje("Opción inválida. Escribe S o N.\n");
+        }
     }
 }
