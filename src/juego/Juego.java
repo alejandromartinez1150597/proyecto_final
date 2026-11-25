@@ -9,7 +9,7 @@ public class Juego {
     private BancoPreguntas banco;
     private boolean seRetiro; // queda en true si el jugador decide plantarse
     private Bolsa bolsa = new Bolsa("bolsa.txt"); // lo que pierden los demas, se la lleva el que gane las 12
-    private EventoPeligroso eventoPeligroso = new EventoPeligroso(25); // 25% de probabilidad de que salga el evento
+    private EventoPeligroso eventoPeligroso = new EventoPeligroso(16); // probabilidad de que salga el evento
     
     public Juego(String nombreJugador) {
         this.consola = new Consola();
@@ -45,20 +45,34 @@ public class Juego {
             Pregunta pregunta = null;
             boolean riesgo = false;
             long bono = jugador.getEscalera().getValorNivel(nivel); // el bono es igual al valor del nivel
-            if (eventoPeligroso.sale(nivel) && eventoPeligroso.ofrecer(consola, bono)) {
+            
+            // El evento peligroso NO se crea en el primer nivel (nivel > 1)
+            if (nivel > 1 && eventoPeligroso.sale(nivel) && eventoPeligroso.ofrecer(consola, bono)) {
                 pregunta = banco.siguientePregunta(eventoPeligroso.nivelDificil(nivel));
                 riesgo = (pregunta != null);
             }
+            
             if (pregunta == null) {
                 pregunta = banco.siguientePregunta(nivel); // seguir normal
-                }
-                if (pregunta == null) { /* tu mensaje actual de "No hay preguntas..." y el break */ }
-                boolean ganoRonda = jugarRonda(pregunta, banco);
-                if (!ganoRonda) { break; }
-                if (riesgo) {
-                    jugador.getEscalera().sumarBolsa(bono);
-                    consola.mostrarMensaje(" >> ¡Bono de riesgo! Ganas " + Consola.dinero(bono) + " extra.\n");
-                }
+            }
+            
+            if (pregunta == null) { 
+                consola.mostrarMensaje(" >> No hay más preguntas disponibles en el banco. Fin del juego.\n");
+                break; 
+            }
+            
+            // Si es riesgo (!riesgo pasa true para permitir, !riesgo con true pasa false para prohibir comodines)
+            boolean ganoRonda = jugarRonda(pregunta, banco, !riesgo);
+            if (!ganoRonda) { break; }
+            
+            if (riesgo) {
+                jugador.getEscalera().sumarBolsa(bono);
+                consola.mostrarMensaje(" >> ¡Bono de riesgo! Ganas " + Consola.dinero(bono) + " extra.\n");
+            }
+            
+            if (nivel == 12) {
+                completo = true;
+            }
         }
 
         // el que responde las 12 se lleva la bolsa y queda vacia para los siguientes
@@ -97,7 +111,7 @@ public class Juego {
         consola.mostrarMensaje("\n" + ranking.mostrarTop(5) + "\n");
     }
 
-    private boolean jugarRonda(Pregunta preguntaActual, BancoPreguntas banco) {
+    private boolean jugarRonda(Pregunta preguntaActual, BancoPreguntas banco, boolean permitirComodines) {
         boolean usoComodinEnRonda = false;
 
         while (true) {
@@ -117,66 +131,70 @@ public class Juego {
                 consola.mostrarMensaje("     " + preguntaActual.getOpciones().obtener(i) + "\n");
             }
 
-            int cantPublico = jugador.contarComodin("Ayuda del publico");
-            int cantCambio = jugador.contarComodin("Cambio de pregunta");
-            int cant5050 = jugador.contarComodin("50/50");
+            // Solo muestra y procesa comodines si están permitidos en esta ronda
+            if (permitirComodines) {
+                int cantPublico = jugador.contarComodin("Ayuda del publico");
+                int cantCambio = jugador.contarComodin("Cambio de pregunta");
+                int cant5050 = jugador.contarComodin("50/50");
 
-            // Muestra los comodines disponibles antes de responder la pregunta
-            if (cantPublico > 0 || cantCambio > 0 || cant5050 > 0) {
-                consola.mostrarMensaje("\n Comodines (usar uno reinicia tu multiplicador a x1):\n");
-                consola.mostrarMensaje("   [1] Público (" + cantPublico + ")   [2] Cambio de pregunta (" + cantCambio
-                        + ")   [3] 50/50 (" + cant5050 + ")\n");
-                consola.mostrarMensaje("   [0] Responder sin comodín\n");
-                consola.mostrarMensaje(" Elige una opción: ");
+                if (cantPublico > 0 || cantCambio > 0 || cant5050 > 0) {
+                    consola.mostrarMensaje("\n Comodines (usar uno reinicia tu multiplicador a x1):\n");
+                    consola.mostrarMensaje("   [1] Público (" + cantPublico + ")   [2] Cambio de pregunta (" + cantCambio
+                            + ")   [3] 50/50 (" + cant5050 + ")\n");
+                    consola.mostrarMensaje("   [0] Responder sin comodín\n");
+                    consola.mostrarMensaje(" Elige una opción: ");
 
-                String opcionComodin = consola.leerEntrada();
+                    String opcionComodin = consola.leerEntrada();
 
-                if (opcionComodin.equals("1")) {
-                    Comodin consumido = jugador.usarYConsumirComodin("Ayuda del publico");
-                    if (consumido instanceof ComodinPublico) {
-                        consumido.usar(preguntaActual);
-                        usoComodinEnRonda = true;
-                        jugador.resetearMultiplicador();
-                        consola.mostrarMensaje(" >> Votación del público: " + ((ComodinPublico) consumido).getResultado() + "\n");
-                        continue;
-                    } else {
-                        consola.mostrarMensaje(" >> No tienes comodines de Ayuda del público.\n");
-                        continue;
-                    }
-                } else if (opcionComodin.equals("2")) {
-                    Comodin consumido = jugador.usarYConsumirComodin("Cambio de pregunta");
-                    if (consumido instanceof ComodinCambioPregunta) {
-                        Pregunta nueva = ((ComodinCambioPregunta) consumido).cambiarPregunta(preguntaActual, banco);
-                        usoComodinEnRonda = true;
-                        jugador.resetearMultiplicador();
-
-                        if (nueva != null && !nueva.getEnunciado().equals(preguntaActual.getEnunciado())) {
-                            preguntaActual = nueva;
-                            consola.mostrarMensaje(" >> ¡Pregunta cambiada! Multiplicador ahora en x" + jugador.getMultiplicador() + ".\n");
+                    if (opcionComodin.equals("1")) {
+                        Comodin consumido = jugador.usarYConsumirComodin("Ayuda del publico");
+                        if (consumido instanceof ComodinPublico) {
+                            consumido.usar(preguntaActual);
+                            usoComodinEnRonda = true;
+                            jugador.resetearMultiplicador();
+                            consola.mostrarMensaje(" >> Votación del público: " + ((ComodinPublico) consumido).getResultado() + "\n");
+                            continue;
                         } else {
-                            consola.mostrarMensaje(" >> No había otra pregunta distinta disponible en este nivel; mantienes la actual.\n");
+                            consola.mostrarMensaje(" >> No tienes comodines de Ayuda del público.\n");
+                            continue;
                         }
-                        continue;
-                    } else {
-                        consola.mostrarMensaje(" >> No tienes comodines de Cambio de pregunta.\n");
+                    } else if (opcionComodin.equals("2")) {
+                        Comodin consumido = jugador.usarYConsumirComodin("Cambio de pregunta");
+                        if (consumido instanceof ComodinCambioPregunta) {
+                            Pregunta nueva = ((ComodinCambioPregunta) consumido).cambiarPregunta(preguntaActual, banco);
+                            usoComodinEnRonda = true;
+                            jugador.resetearMultiplicador();
+
+                            if (nueva != null && !nueva.getEnunciado().equals(preguntaActual.getEnunciado())) {
+                                preguntaActual = nueva;
+                                consola.mostrarMensaje(" >> ¡Pregunta cambiada! Multiplicador ahora en x" + jugador.getMultiplicador() + ".\n");
+                            } else {
+                                consola.mostrarMensaje(" >> No había otra pregunta distinta disponible en este nivel; mantienes la actual.\n");
+                            }
+                            continue;
+                        } else {
+                            consola.mostrarMensaje(" >> No tienes comodines de Cambio de pregunta.\n");
+                            continue;
+                        }
+                    } else if (opcionComodin.equals("3")) {
+                        Comodin consumido = jugador.usarYConsumirComodin("50/50");
+                        if (consumido instanceof Comodin5050) {
+                            consumido.usar(preguntaActual);
+                            usoComodinEnRonda = true;
+                            jugador.resetearMultiplicador();
+                            consola.mostrarMensaje(" >> ¡Comodín 50/50 aplicado! Se eliminaron 2 opciones incorrectas.\n");
+                            continue;
+                        } else {
+                            consola.mostrarMensaje(" >> No tienes comodines 50/50.\n");
+                            continue;
+                        }
+                    } else if (!opcionComodin.equals("0")) {
+                        consola.mostrarMensaje(" >> Opción inválida.\n");
                         continue;
                     }
-                } else if (opcionComodin.equals("3")) {
-                    Comodin consumido = jugador.usarYConsumirComodin("50/50");
-                    if (consumido instanceof Comodin5050) {
-                        consumido.usar(preguntaActual);
-                        usoComodinEnRonda = true;
-                        jugador.resetearMultiplicador();
-                        consola.mostrarMensaje(" >> ¡Comodín 50/50 aplicado! Se eliminaron 2 opciones incorrectas.\n");
-                        continue;
-                    } else {
-                        consola.mostrarMensaje(" >> No tienes comodines 50/50.\n");
-                        continue;
-                    }
-                } else if (!opcionComodin.equals("0")) {
-                    consola.mostrarMensaje(" >> Opción inválida.\n");
-                    continue;
                 }
+            } else {
+                consola.mostrarMensaje("\n >> [EVENTO PELIGROSO: Los comodines están prohibidos en esta pregunta]\n");
             }
             break;
         }
