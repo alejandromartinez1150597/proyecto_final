@@ -7,7 +7,7 @@ public class Jugador {
     private ListaEnlazada<Comodin> comodines; // Aquí se guradarán los comodines del jugador
     private EscaleraPremios escalera; // Controla los niveles ganados y premios
 
-    public static final int MAX_COMODIN_TIPO = 2; // Se fija el maximo de comodines que puede tener por tipo a 2
+    public static final int MAX_COMODIN_TIPO = 1; // solo se puede tener un comodin de cada tipo
 
     public Jugador(String nombre){
         this.nombre = nombre;
@@ -58,12 +58,12 @@ public class Jugador {
         return total;
     }
 
-    // Solo permite comprar si tiene menos de 2 de ese tipo
+    // Solo permite comprar si no tiene ese comodin (el maximo es 1 de cada tipo)
     public boolean puedeComprarComodin(String nombreComodin) {
         return contarComodin(nombreComodin) < MAX_COMODIN_TIPO;
     }
 
-    // Agrega el comodín si no supera el límite de 2 y tiene saldo suficiente
+    // Agrega el comodín si no lo tiene ya y tiene saldo suficiente
     public boolean comprarComodin(Comodin nuevoComodin) {
         if (nuevoComodin == null) {
             return false;

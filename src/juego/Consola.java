@@ -86,4 +86,15 @@ public class Consola {
             mostrarMensaje(" Opción inválida. Ingresa A, B, C, D o R para retirarte: ");
         }
     }
+
+    // igual que la anterior pero tambien acepta 0, que abre el menu de comodines
+    public String leerRespuestaComodinORetiro(){
+        while (true) {
+            String entrada = leerEntrada().toUpperCase();
+            if (entrada.matches("[A-DR0]")){
+                return entrada;
+            }
+            mostrarMensaje(" Opción inválida. Ingresa A, B, C, D, 0 para un comodín o R para retirarte: ");
+        }
+    }
 }

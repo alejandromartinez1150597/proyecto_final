@@ -7,7 +7,7 @@ public class Comodin5050 extends Comodin {
     private Random azar;
 
     public Comodin5050() {
-        super("50/50", 1000000L);
+        super("50/50", 4000000L);
         this.azar = new Random();
     }
 
