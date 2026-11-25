@@ -131,10 +131,7 @@ Juego ──> ArchivoPuntajes ──> Ranking ──> ArbolBinarioBusqueda<Punta
 ## Lo que no alcanzamos a hacer y lo que haríamos distinto
 
 - **Lo que no alcanzamos a hacer:**
-  - **Pozo acumulado ("la bolsa"):** al principio pensamos guardar en un archivo (`bolsa.txt`) el dinero que perdían los jugadores que fallaban para dárselo a quien completara los 12 niveles, pero al implementar los niveles seguros (`3`, `6` y `9`) y la compra de comodines con saldo propio, esa idea quedó por fuera.
-  - **Sincronizar `50/50` con `Ayuda del público`:** si en una misma pregunta el jugador usa primero `50/50` (quedando solo 2 opciones en la lista) y luego usa `Ayuda del público`, este último sigue repartiendo porcentajes entre las 4 letras (`A, B, C, D`) en vez de repartir el 100% solo entre las 2 que quedan.
   - **Turnos de varios jugadores en una misma ejecución:** dejamos la `Cola` lista para manejar turnos, pero `Main` ejecuta una partida por corrida y hay que volver a abrirlo para el siguiente jugador.
 - **Lo que haríamos distinto:**
-  - **Evitar el desbalanceo del árbol al cargar `puntajes.txt`:** `ArchivoPuntajes` guarda los puntajes usando `obtenerTodos()`, que recorre en inorden inverso (de mayor a menor). Al volver a abrir el juego y reinsertarlos en ese orden, cada puntaje se va siempre a la izquierda del anterior y el ABB queda degenerado como una lista. Lo cambiaríamos para guardarlos en **preorden** (raíz, izquierda, derecha) y reconstruir la forma original del árbol.
   - **Separar la consola de la lógica del juego:** `Juego` imprime mensajes directamente con `Consola` mientras cambia el estado de `Jugador` y `EscaleraPremios`; separar ambas capas facilitaría pasar el juego a interfaz gráfica sin tocar las reglas.
   - **Evitar repetidos en el ranking:** si una misma persona juega varias veces, hoy queda registrada varias veces en `puntajes.txt`; lo ideal sería actualizar su nodo solo si supera su mejor puntaje.
