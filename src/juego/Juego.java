@@ -1,7 +1,6 @@
 package juego;
 
 import modelo.*;
-import estructuras.*;
 
 public class Juego {
 
@@ -10,7 +9,8 @@ public class Juego {
     private BancoPreguntas banco;
     private boolean seRetiro; // queda en true si el jugador decide plantarse
     private Bolsa bolsa = new Bolsa("bolsa.txt"); // lo que pierden los demas, se la lleva el que gane las 12
-
+    private EventoPeligroso eventoPeligroso = new EventoPeligroso(25); // 25% de probabilidad de que salga el evento
+    
     public Juego(String nombreJugador) {
         this.consola = new Consola();
         this.jugador = new Jugador(nombreJugador);
@@ -42,22 +42,23 @@ public class Juego {
 
         boolean completo = false; // queda en true si responde bien las 12
         for (int nivel = 1; nivel <= 12; nivel++) {
-            Pregunta pregunta = banco.siguientePregunta(nivel);
+            Pregunta pregunta = null;
+            boolean riesgo = false;
+            long bono = jugador.getEscalera().getValorNivel(nivel); // el bono es igual al valor del nivel
+            if (eventoPeligroso.sale(nivel) && eventoPeligroso.ofrecer(consola, bono)) {
+                pregunta = banco.siguientePregunta(eventoPeligroso.nivelDificil(nivel));
+                riesgo = (pregunta != null);
+            }
             if (pregunta == null) {
-                consola.mostrarMensaje("\nNo hay preguntas cargadas para el nivel " + nivel + ". Fin del ciclo de prueba.\n");
-                break;
-            }
-
-            boolean ganoRonda = jugarRonda(pregunta, banco);
-            if (!ganoRonda) {
-                break;
-            }
-
-            if (nivel < 12) {
-                menuCompraComodin(nivel + 1);
-            } else {
-                completo = true;
-            }
+                pregunta = banco.siguientePregunta(nivel); // seguir normal
+                }
+                if (pregunta == null) { /* tu mensaje actual de "No hay preguntas..." y el break */ }
+                boolean ganoRonda = jugarRonda(pregunta, banco);
+                if (!ganoRonda) { break; }
+                if (riesgo) {
+                    jugador.getEscalera().sumarBolsa(bono);
+                    consola.mostrarMensaje(" >> ¡Bono de riesgo! Ganas " + Consola.dinero(bono) + " extra.\n");
+                }
         }
 
         // el que responde las 12 se lleva la bolsa y queda vacia para los siguientes
