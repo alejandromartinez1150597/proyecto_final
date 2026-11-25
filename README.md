@@ -121,7 +121,7 @@ Juego ──> ArchivoPuntajes ──> Ranking ──> ArbolBinarioBusqueda<Punta
 
 ## Integrantes y reparto del trabajo
 
-| Nombre    | Usuario de GitHub          | Rol | Clases y partes del código desarrolladas |
+| Apellido    | Usuario de GitHub          | Rol | Clases y partes del código desarrolladas |
 |-----------|----------------------------|-----|------------------------------------------|
 | Martínez  | @alejandromartinez1150597  | P1  | `Juego` (ciclo de 12 niveles, uso de los 3 comodines en ronda y tienda post-nivel), `Jugador` (inventario y compras), `Pregunta` (bloques y categorías), `Consola` y `Main`. |
 | Chica     | @Chika002                  | P2  | `Nodo`, `ListaEnlazada`, clase abstracta `Comodin` (con precios) y las tres subclases: `Comodin5050`, `ComodinPublico` y `ComodinCambioPregunta`. |
