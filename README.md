@@ -86,7 +86,7 @@ Jugador                      Cola<Pregunta>
 Juego ──> ArchivoPuntajes ──> Ranking ──> ArbolBinarioBusqueda<Puntaje>
 ```
 
-### Responsabilidad de cada clase (en una línea)
+### Responsabilidad de cada clase
 
 - **Paquete `estructuras`**
   - `Nodo<T>`: Representa un nodo simple con un dato genérico y la referencia al siguiente nodo.
