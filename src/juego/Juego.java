@@ -8,6 +8,7 @@ public class Juego {
     private Jugador jugador;
     private BancoPreguntas banco;
     private boolean seRetiro; // queda en true si el jugador decide plantarse
+    private long dineroAlcanzado;
     private Bolsa bolsa = new Bolsa("bolsa.txt"); // lo que pierden los demas, se la lleva el que gane las 12
     private EventoPeligroso eventoPeligroso = new EventoPeligroso(16); // probabilidad de que salga el evento
     private static final int NIVEL_TIENDA = 5; // despues de esta pregunta se abre la tienda, solo esa vez
@@ -31,6 +32,7 @@ public class Juego {
 
     // Este metodo inicia el ciclo de la partida
     public void iniciarPartida() {
+        dineroAlcanzado = 0;
         bolsa.cargar();
         consola.mostrarTitulo("¡BIENVENIDO, " + jugador.getNombre().toUpperCase() + "!");
         consola.mostrarMensaje(" - Responde 12 preguntas, cada una mas dificil y mejor pagada.\n");
@@ -85,6 +87,7 @@ public class Juego {
         if (completo && bolsa.getMonto() > 0) {
             long premioBolsa = bolsa.entregar();
             jugador.getEscalera().sumarBolsa(premioBolsa);
+            dineroAlcanzado = Math.max(dineroAlcanzado,jugador.getEscalera().getPremio());
             bolsa.guardar();
             consola.mostrarMensaje("\n >> ¡TE LLEVAS LA BOLSA! Se suman " + Consola.dinero(premioBolsa) + " a tu premio.\n");
         }
@@ -111,7 +114,7 @@ public class Juego {
         ArchivoPuntajes archivo = new ArchivoPuntajes("puntajes.txt");
         archivo.cargar(ranking);
 
-        ranking.agregar(new Puntaje(jugador.getNombre(), jugador.getEscalera().getPremio()));
+        ranking.agregar(new Puntaje(jugador.getNombre(),dineroAlcanzado));
         archivo.guardar(ranking);
 
         consola.mostrarMensaje("\n" + ranking.mostrarTop(5) + "\n");
@@ -245,6 +248,7 @@ public class Juego {
                 jugador.registrarAciertoSinComodin();
             }
             long gano = jugador.getEscalera().getPremio() - antes;
+            dineroAlcanzado = Math.max(dineroAlcanzado,jugador.getEscalera().getPremio());
             consola.mostrarMensaje("\n >> ¡CORRECTO! Ganaste " + Consola.dinero(gano)
                     + ". Llevas " + jugador.mostrarPremioAcumulado() + ".\n");
             if (jugador.getMultiplicador() > 1 && nivelJugador < 12) {
@@ -254,6 +258,7 @@ public class Juego {
         } else {
             // pierde todo y eso se va a la bolsa
             long perdido = jugador.aplicarPenalidad();
+            dineroAlcanzado = Math.max(dineroAlcanzado, perdido);
             bolsa.agregar(perdido);
             bolsa.guardar();
             consola.mostrarMensaje("\n >> INCORRECTO. La respuesta era " + textoOpcion(preguntaActual) + ".\n");
