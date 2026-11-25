@@ -22,8 +22,15 @@ public class Ranking {
         return arbol.recorrerInordenInverso(cantidad);
     }
 
-    public ArrayList<Puntaje> obtenerTodos() { // todos los puntajes, se usa para guardarlos en el archivo
-        return arbol.recorrerInordenInverso(arbol.tamanio());
+    // todos los puntajes en preorden, se usa para guardarlos en el archivo.
+    // si se guardaran de mayor a menor, al cargarlos cada uno se iria a la izquierda del
+    // anterior y el arbol quedaria como una lista. en preorden se vuelve a armar igual
+    public ArrayList<Puntaje> obtenerTodos() {
+        return arbol.recorrerPreorden();
+    }
+
+    public int altura() {
+        return arbol.altura();
     }
 
     public String mostrarTop(int cantidad) {

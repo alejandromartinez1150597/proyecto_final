@@ -38,7 +38,7 @@ public class ArchivoPuntajes {
         }
     }
 
-    // escribe todos los puntajes del ranking en el archivo. se llama al terminar cada partida
+    // escribe todos los puntajes del ranking en el archivo (en preorden). se llama al terminar cada partida
     public void guardar(Ranking ranking) {
         ArrayList<String> lineas = new ArrayList<>();
         for (Puntaje p : ranking.obtenerTodos()) {
