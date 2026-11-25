@@ -47,7 +47,7 @@ public class Main {
     // al terminar cada partida se pregunta si juega otra persona, solo se acepta S o N
     private static boolean quiereOtraPartida(Consola consola) {
         while (true) {
-            consola.mostrarMensaje("\n ¿Quiere jugar otro concursante? (S/N): ");
+            consola.mostrarMensaje("\n ¿Quiere jugar otro jugador? (S/N): ");
             String respuesta = consola.leerEntrada().toUpperCase();
             if (respuesta.equals("S")) {
                 return true;
