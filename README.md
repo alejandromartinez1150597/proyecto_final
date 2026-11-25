@@ -43,21 +43,8 @@ Para que cualquier persona pueda jugar sin abrir un IDE ni modificar el código 
 - `banco_preguntas.txt` (el banco con las 500 preguntas).
 - `jugar.bat` (ejecutable de Windows que configura la consola en UTF-8 y lanza el `.jar`).
 
+NOTA: El juego tiene que ejecutarse desde la carpeta donde está `banco_preguntas.txt`, porque ahí lee las preguntas y crea `puntajes.txt`.
 
-### Desde el código fuente (repositorio)
-
-Desde la raíz del repositorio (donde están `src/` y `banco_preguntas.txt`):
-
-```bash
-javac -encoding UTF-8 -d bin -sourcepath src src/juego/Main.java
-```
-
-```bash
-java -cp bin juego.Main
-```
-
-El juego tiene que ejecutarse desde la carpeta donde está `banco_preguntas.txt`, porque ahí lee las preguntas y crea `puntajes.txt`.
-En la terminal de Windows las tildes y la ñ se ven bien sin configurar nada.
 
 ## Estructura del proyecto
 
