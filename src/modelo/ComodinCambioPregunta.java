@@ -5,7 +5,7 @@ import juego.*;
 public class ComodinCambioPregunta extends Comodin {
 
     public ComodinCambioPregunta() {
-        super("Cambio de pregunta", 750000L);
+        super("Cambio de pregunta", 3000000L);
     }
 
     @Override
