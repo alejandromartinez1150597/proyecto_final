@@ -1,4 +1,4 @@
-# Proyecto final — Vuélvete Millonario
+# Proyecto final — Trivia Millonario
 
 Proyecto final de **Estructura de Datos**, Instituto Tecnológico Metropolitano (ITM), semestre 2026-2.
 Docente: William Giraldo.
