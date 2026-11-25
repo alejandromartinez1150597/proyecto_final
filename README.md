@@ -43,7 +43,6 @@ Para que cualquier persona pueda jugar sin abrir un IDE ni modificar el código 
 - `banco_preguntas.txt` (el banco con las 500 preguntas).
 - `jugar.bat` (ejecutable de Windows que configura la consola en UTF-8 y lanza el `.jar`).
 
-Solo hay que descomprimir la carpeta `TriviaMillonario` y hacer doble clic en **`jugar.bat`** (o ejecutar `java -jar proyecto_final.jar` desde la terminal dentro de esa carpeta).
 
 ### Desde el código fuente (repositorio)
 
