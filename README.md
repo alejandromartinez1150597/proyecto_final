@@ -40,14 +40,28 @@ pierden al cerrar el juego.
 
 ## Requisitos
 
-- Java **17** o superior (desarrollado y probado en **JDK 26.0.1**, usa `java -version` para comprobar).
+- Java **17** o superior (usa `java -version` para comprobar). Si no lo tienes, se descarga gratis en
+  [adoptium.net](https://adoptium.net) (instalar el **JDK**, que trae `java` y `javac`).
 - No usa librerías externas.
 
-## Cómo compilar y jugar
+## Cómo jugar
 
-### Desde el código fuente
+### Opción 1: descargar y jugar de una (Windows)
 
-Desde la raíz del repositorio (en PowerShell o en cualquier terminal):
+1. Descarga el juego: **[TriviaMillonario.zip](https://github.com/alejandromartinez1150597/proyecto_final/raw/main/descargas/TriviaMillonario.zip)**
+2. Descomprime el zip.
+3. Entra a la carpeta `TriviaMillonario` y dale **doble clic a `jugar.bat`**.
+
+El zip trae el juego ya compilado (`TriviaMillonario.jar`), el banco de preguntas y el `jugar.bat`, que abre el juego
+desde esa carpeta para que encuentre las preguntas. Solo necesita tener Java instalado. En otro sistema operativo, desde
+esa carpeta se juega con `java -jar TriviaMillonario.jar`.
+
+### Opción 2: compilar desde el código fuente
+
+1. Descarga el repositorio: botón verde **Code → Download ZIP** (y descomprímelo) o
+   `git clone https://github.com/alejandromartinez1150597/proyecto_final.git`
+2. Abre una terminal (PowerShell o cualquier otra) **dentro de la carpeta del proyecto**.
+3. Compila y juega:
 
 ```bash
 javac -encoding UTF-8 -d bin -sourcepath src src/juego/Main.java
@@ -59,14 +73,8 @@ java -cp bin juego.Main
 
 En la terminal de Windows las tildes y la ñ se ven bien sin configurar nada, porque `Consola` pasa la consola a UTF-8.
 
-### Para jugar directamente sin tocar código (carpeta `TriviaMillonario`)
-
-Para que cualquier persona pueda jugar sin abrir un IDE ni modificar el código fuente, se generó la carpeta lista para ejecutar **`TriviaMillonario`**, que contiene:
-- `proyecto_final.jar` (el juego ya compilado).
-- `banco_preguntas.txt` (el banco de preguntas).
-- `jugar.bat` (ejecutable de Windows que configura la consola en UTF-8 y lanza el `.jar`).
-
-NOTA: El juego tiene que ejecutarse desde la carpeta donde está `banco_preguntas.txt`, porque ahí lee las preguntas y crea `puntajes.txt`.
+NOTA: El juego tiene que ejecutarse desde la carpeta donde está `banco_preguntas.txt`, porque ahí lee las preguntas y crea
+`puntajes.txt` y `bolsa.txt`.
 
 
 ## Estructura del proyecto
